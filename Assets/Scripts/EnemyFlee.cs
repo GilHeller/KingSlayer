@@ -11,21 +11,28 @@ public class EnemyFlee : MonoBehaviour
     [Header("Distances")]
     public float fleeDistance = 10f;
     public float caughtDistance = 1.5f;
-    public float safeDistance = 20f;
+
+    [Header("Movement Speeds")]
+    public float walkSpeed = 2f;  // Speed during random walk
+    public float runSpeed = 4f;   // Speed when fleeing
+
+    [Header("Random Walk Settings")]
+    public float walkRadius = 5f;
 
     private NavMeshAgent agent;
-    private float distanceToPlayer;
     private bool isCaught = false;
+    private Vector3 walkTarget;
+    private bool isWalking = false;
 
     // Animator parameter names
-    private const string ANIM_RUNNING = "Running";
+    private const string ANIM_SPEED = "Speed";
     private const string ANIM_CAUGHT = "Caught";
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.speed = walkSpeed;
 
-        // Auto-find player if not assigned
         if (player == null)
         {
             GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
@@ -39,7 +46,7 @@ public class EnemyFlee : MonoBehaviour
             Debug.LogError("Animator not assigned!");
 
         animator.applyRootMotion = false;
-        animator.SetBool(ANIM_RUNNING, false);
+        animator.SetFloat(ANIM_SPEED, 0f);
     }
 
     void Update()
@@ -47,7 +54,7 @@ public class EnemyFlee : MonoBehaviour
         if (isCaught || player == null)
             return;
 
-        distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (distanceToPlayer < caughtDistance)
         {
@@ -57,21 +64,37 @@ public class EnemyFlee : MonoBehaviour
 
         if (distanceToPlayer < fleeDistance)
         {
+            // Fleeing
+            isWalking = false;
+            agent.speed = runSpeed;
             Flee();
-            animator.SetBool(ANIM_RUNNING, true);
         }
-        else if (agent.remainingDistance < 0.1f)
+        else
         {
-            if (agent.hasPath) agent.ResetPath();
-            animator.SetBool(ANIM_RUNNING, false);
+            // Random walking
+            agent.speed = walkSpeed;
+
+            if (!isWalking || Vector3.Distance(transform.position, walkTarget) < 0.5f)
+            {
+                if (GetRandomWalkPoint(out Vector3 newWalkTarget))
+                {
+                    walkTarget = newWalkTarget;
+                    agent.SetDestination(walkTarget);
+                    isWalking = true;
+                }
+            }
         }
+
+        // Update animation speed based on velocity magnitude (normalized)
+        float speedNormalized = agent.velocity.magnitude / agent.speed;
+        animator.SetFloat(ANIM_SPEED, speedNormalized);
     }
 
     void Flee()
     {
         Vector3 directionAway = (transform.position - player.position).normalized;
 
-        float angle = Random.Range(-30f, 30f); // Adjust ±angle as needed
+        float angle = Random.Range(-30f, 30f); // random deviation angle
         Quaternion rotation = Quaternion.Euler(0, angle, 0);
         Vector3 deviatedDirection = rotation * directionAway;
 
@@ -88,7 +111,6 @@ public class EnemyFlee : MonoBehaviour
         }
     }
 
-
     public void OnCaught()
     {
         if (isCaught) return;
@@ -100,16 +122,14 @@ public class EnemyFlee : MonoBehaviour
             agent.ResetPath();
             agent.enabled = false;
         }
-        
+
         SnapToGround();
 
         animator.applyRootMotion = true;
-        animator.SetBool(ANIM_RUNNING, false);
+        animator.SetFloat(ANIM_SPEED, 0f);
         animator.SetTrigger(ANIM_CAUGHT);
     }
 
-
-    // Optional: snap Y position to ground after caught (if animation floats)
     private void SnapToGround()
     {
         if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 5f))
@@ -120,7 +140,21 @@ public class EnemyFlee : MonoBehaviour
         }
     }
 
-    // Debug: show distances in Scene view
+    bool GetRandomWalkPoint(out Vector3 result)
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * walkRadius;
+        randomDirection += transform.position;
+
+        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, walkRadius, NavMesh.AllAreas))
+        {
+            result = hit.position;
+            return true;
+        }
+
+        result = Vector3.zero;
+        return false;
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -129,7 +163,7 @@ public class EnemyFlee : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, fleeDistance);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, safeDistance);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, walkRadius);
     }
 }
