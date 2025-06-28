@@ -11,16 +11,9 @@ public class DoorCollider : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            Debug.Log("DoorCollider: OnTriggerEnter called");
             doorAnimator.SetTrigger("Open");
-            if (doorAudio != null) doorAudio.Play();
-
-            // PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-            // if (playerHealth != null)
-            // {
-            //     playerHealth.health = Math.Max(100, playerHealth.health * 2);
-            //     playerHealth.UpdateHealthText();
-            // }
-            
+            if (doorAudio != null) doorAudio.Play(); 
         }
     }
 

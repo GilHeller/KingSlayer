@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class RoomBehaviour : MonoBehaviour
 {
@@ -15,6 +16,22 @@ public class RoomBehaviour : MonoBehaviour
             doors[i].SetActive(status[i]);
             doorsWood[i].SetActive(status[i]);
             walls[i].SetActive(!status[i]);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+            Debug.Log("Player health: " + playerHealth.health);
+            if (playerHealth != null)
+            {
+                playerHealth.health = Math.Min(100, playerHealth.health * 2);
+                playerHealth.UpdateHealthText();
+                Debug.Log("Player health after: " + playerHealth.health);
+            }
+            
         }
     }
 }
