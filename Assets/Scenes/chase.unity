@@ -445,12 +445,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2024328747}
   animator: {fileID: 1480099117}
-  fleeDistance: 10
+  fleeDistance: 15
   caughtDistance: 1.5
-  safeDistance: 10
+  walkSpeed: 5
+  runSpeed: 10
   walkRadius: 3
-  walkSpeed: 4
-  runSpeed: 8
 --- !u!143 &1480099114
 CharacterController:
   m_ObjectHideFlags: 0
