@@ -1910,7 +1910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8094ffb28ac108c4f8b5b30f5c9568d2, type: 3}
       propertyPath: m_Name
-      value: The Boss
+      value: Shopekeeper
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 8094ffb28ac108c4f8b5b30f5c9568d2, type: 3}
       propertyPath: m_Controller
@@ -1923,8 +1923,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8094ffb28ac108c4f8b5b30f5c9568d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1329652934}
   m_SourcePrefab: {fileID: 100100000, guid: 8094ffb28ac108c4f8b5b30f5c9568d2, type: 3}
+--- !u!1 &1329652933 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8094ffb28ac108c4f8b5b30f5c9568d2, type: 3}
+  m_PrefabInstance: {fileID: 1329652932}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1329652934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329652933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b336773d1de1b94e997868711725409, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  welcomeMessage: Welcome to my weapon shop!
+  interactionRange: 3
+  interactionKey: 101
 --- !u!1001 &1436694307
 PrefabInstance:
   m_ObjectHideFlags: 0

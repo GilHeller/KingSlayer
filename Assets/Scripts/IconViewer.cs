@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 namespace Assets.FantasyIconsPackFree.Demo
 {
-	/// <summary>
-	/// Creates a grid view with icons.
-	/// </summary>
 	public class IconViewer : MonoBehaviour
 	{
 		public List<Object> Folders;

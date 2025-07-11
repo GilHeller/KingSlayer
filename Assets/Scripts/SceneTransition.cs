@@ -26,10 +26,10 @@ public class SceneTransition : MonoBehaviour
     }
     public void LoadScene()
     {
-        // if (GameManager.Instance != null)
-        // {
-        //     GameManager.Instance.SaveGameData();
-        // }
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SaveGameData();
+        }
         Debug.Log("Loading scene: " + targetScene);
         
         SceneManager.LoadScene(targetScene);
