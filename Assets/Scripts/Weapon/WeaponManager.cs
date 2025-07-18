@@ -15,7 +15,7 @@ public class WeaponManager : MonoBehaviour
         // Equip the currently equipped weapon from save data
         if (GameManager.Instance != null)
         {
-            EquipWeapon(GameManager.Instance.gameData.currentEquippedWeapon);
+            EquipWeapon(GameManager.Instance.gameData.currentEquippedWeapon.weaponType);
         }
     }
     
@@ -111,9 +111,9 @@ public class WeaponManager : MonoBehaviour
                     case WeaponType.Shield:
                         currentWeapon = currentWeaponModel.AddComponent<Shield>();
                         break;
-                    case WeaponType.Bow:
-                        currentWeapon = currentWeaponModel.AddComponent<Bow>();
-                        break;
+                    // case WeaponType.Bow:
+                    //     currentWeapon = currentWeaponModel.AddComponent<Bow>();
+                    //     break;
                 }
                 
                 if (currentWeapon != null)

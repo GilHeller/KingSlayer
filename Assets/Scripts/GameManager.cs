@@ -5,9 +5,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameData gameData;
-    
+
     void Awake()
     {
+        PlayerPrefs.DeleteAll();
         if (Instance == null)
         {
             Instance = this;
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }
+        } // Clear PlayerPrefs for testing
     }
     
     public void SaveGameData()
@@ -61,7 +62,7 @@ public class GameManager : MonoBehaviour
     {
         if (gameData.ownedWeapons.Contains(weapon))
         {
-            gameData.currentEquippedWeapon = weapon;
+            gameData.currentEquippedWeapon.weaponType = weapon;
             SaveGameData();
         }
     }

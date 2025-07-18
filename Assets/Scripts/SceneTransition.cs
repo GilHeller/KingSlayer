@@ -16,6 +16,11 @@ public class SceneTransition : MonoBehaviour
             StartCoroutine(LoadSceneWithFade());
         }
     }
+
+    public void OnExitButtonClick()
+    {
+        StartCoroutine(LoadSceneWithFade());
+    }
     
     private IEnumerator LoadSceneWithFade()
     {

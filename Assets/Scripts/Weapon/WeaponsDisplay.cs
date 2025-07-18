@@ -3,13 +3,14 @@ using UnityEngine;
 public class WeaponDisplay : MonoBehaviour
 {
     public WeaponType weaponType;
-    public WeaponStore weaponStore;
+    public WeaponStoreManager weaponStore;
     
     void OnMouseDown()
     {
         if (weaponStore != null)
         {
-            weaponStore.ShowWeaponInfo(weaponType);
+            // weaponStore.ShowWeaponInfo(weaponType);
+            Debug.Log($"Weapon {weaponType} clicked.");
         }
     }
     
