@@ -243,7 +243,7 @@ void HandlePunchInput()
     // Check for left mouse button click and if cooldown allows
     if (Input.GetMouseButtonDown(0) && canPunch)
     {
-        Punch();
+        Hit();
         canPunch = false; // Start cooldown
         lastPunchTime = Time.time;
     }
@@ -255,10 +255,12 @@ void HandlePunchInput()
     }
 }
 
-    void Punch()
+    public void Hit(float externalDamage = 0f)
     {
-        if (animator != null)
+        if (animator != null && !externalDamage.Equals(0f)) // If external damage is provided, use it
         {
+            punchDamage = externalDamage;
+        } else {
             animator.SetTrigger(punchParam); // Trigger the punch animation
         }
 

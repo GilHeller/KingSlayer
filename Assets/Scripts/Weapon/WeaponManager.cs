@@ -6,6 +6,8 @@ public class WeaponManager : MonoBehaviour
     public WeaponData[] allWeapons;
     public Transform weaponAttachPoint;
     public Animator playerAnimator;
+
+    public GameObject archerPrefab;
     
     private Weapon currentWeapon;
     private GameObject currentWeaponModel;
@@ -23,42 +25,62 @@ public class WeaponManager : MonoBehaviour
     {
         HandleInput();
     }
+
+public void SwitchToArcher()
+{
+    GameObject currentPlayer = GameObject.FindGameObjectWithTag("Player");
+    if (currentPlayer == null)
+        {
+            Debug.LogError("No current player to replace!");
+            return;
+        }
+
+    // Save current position & rotation
+    Vector3 position = currentPlayer.transform.position;
+    Quaternion rotation = currentPlayer.transform.rotation;
+
+    // Destroy current player
+    Destroy(currentPlayer);
+
+    // Instantiate archer prefab
+    currentPlayer = Instantiate(archerPrefab, position, rotation);
+}
     
     void HandleInput()
     {
         if (currentWeapon != null)
         {
-            // Attack input
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (currentWeapon.weaponData.weaponType == WeaponType.Bow)
-                {
-                    currentWeapon.StartAiming();
-                }
-                else
-                {
-                    currentWeapon.Attack();
-                }
-            }
+            // // Attack input
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     if (currentWeapon.weaponData.weaponType == WeaponType.Bow)
+            //     {
+            //         currentWeapon.StartAiming();
+            //     }
+            //     else
+            //     {
+            //         currentWeapon.Attack();
+            //     }
+            // }
             
-            if (Input.GetMouseButtonUp(0) && currentWeapon.weaponData.weaponType == WeaponType.Bow)
-            {
-                currentWeapon.StopAiming();
-            }
+            // if (Input.GetMouseButtonUp(0) && currentWeapon.weaponData.weaponType == WeaponType.Bow)
+            // {
+            //     currentWeapon.StopAiming();
+            // }
             
-            // Shield blocking
-            if (currentWeapon.weaponData.weaponType == WeaponType.Shield)
-            {
-                Shield shield = currentWeapon as Shield;
-                if (Input.GetMouseButton(1))
-                {
-                    shield.StartBlocking();
-                }
-                else if (Input.GetMouseButtonUp(1))
-                {
-                    shield.StopBlocking();
-                }
-            }
+            // // Shield blocking
+            // if (currentWeapon.weaponData.weaponType == WeaponType.Shield)
+            // {
+            //     Shield shield = currentWeapon as Shield;
+            //     if (Input.GetMouseButton(1))
+            //     {
+            //         shield.StartBlocking();
+            //     }
+            //     else if (Input.GetMouseButtonUp(1))
+            //     {
+            //         shield.StopBlocking();
+            //     }
+            // }
         }
         
         // Weapon switching (number keys)
@@ -70,6 +92,7 @@ public class WeaponManager : MonoBehaviour
     
     void TryEquipWeapon(WeaponType weaponType)
     {
+        Debug.Log($"Trying to equip weapon: {weaponType}");
         if (GameManager.Instance.gameData.ownedWeapons.Contains(weaponType))
         {
             EquipWeapon(weaponType);
@@ -78,6 +101,7 @@ public class WeaponManager : MonoBehaviour
     
     public void EquipWeapon(WeaponType weaponType)
     {
+        Debug.Log($"Equipping weapon: {weaponType}");
         // Find weapon data
         WeaponData weaponData = System.Array.Find(allWeapons, w => w.weaponType == weaponType);
         if (weaponData == null) return;
@@ -103,17 +127,18 @@ public class WeaponManager : MonoBehaviour
                 switch (weaponType)
                 {
                     case WeaponType.Knife:
-                        currentWeapon = currentWeaponModel.AddComponent<Knife>();
+                        // currentWeapon = currentWeaponModel.AddComponent<Knife>();
                         break;
                     case WeaponType.Sword:
-                        currentWeapon = currentWeaponModel.AddComponent<Sword>();
+                        // currentWeapon = currentWeaponModel.AddComponent<Sword>();
                         break;
                     case WeaponType.Shield:
-                        currentWeapon = currentWeaponModel.AddComponent<Shield>();
+                        // currentWeapon = currentWeaponModel.AddComponent<Shield>();
                         break;
-                    // case WeaponType.Bow:
-                    //     currentWeapon = currentWeaponModel.AddComponent<Bow>();
-                    //     break;
+                    case WeaponType.Bow:
+                        // currentWeapon = currentWeaponModel.AddComponent<Bow>();
+                        SwitchToArcher();
+                        break;
                 }
                 
                 if (currentWeapon != null)

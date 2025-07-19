@@ -8,6 +8,7 @@ public class WeaponStoreUI : MonoBehaviour
 {
     [Header("Weapon Info Panel")]
     public TextMeshProUGUI weaponNameText;
+    public TextMeshProUGUI weaponPowerText;
     public TextMeshProUGUI weaponPriceText;
     public Image weaponPreviewImage;
     
@@ -45,7 +46,10 @@ public class WeaponStoreUI : MonoBehaviour
     public void UpdateWeaponInfo(WeaponData weapon)
     {
         if (weaponNameText != null)
-            weaponNameText.text = "Selected wepaon:" + weapon.weaponName.Replace(" [Paint]", "");
+            weaponNameText.text = weapon.weaponName.Replace(" [Paint]", "");
+
+        if (weaponPowerText != null)
+            weaponPowerText.text = $"${(weapon.damage > 0 ? "Damage" : "Shield")}: {weapon.damage}";
         
         if (weaponPriceText != null)
             weaponPriceText.text = $"${weapon.price}";
