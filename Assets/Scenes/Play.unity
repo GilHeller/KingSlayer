@@ -577,7 +577,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2367853087783433654, guid: 67a44bec58bfdce44abc31b2131a6be1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2068707089}
   m_SourcePrefab: {fileID: 100100000, guid: 67a44bec58bfdce44abc31b2131a6be1, type: 3}
 --- !u!1 &196339818
 GameObject:
@@ -1780,7 +1783,7 @@ PrefabInstance:
     - target: {fileID: 3203145408851348536, guid: 4b1e27185ea5d0f49b86618e69e537ad, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1035700092}
+      objectReference: {fileID: 665647732}
     - target: {fileID: 3203145408851348536, guid: 4b1e27185ea5d0f49b86618e69e537ad, type: 3}
       propertyPath: 'wayPoints.Array.data[0]'
       value: 
@@ -2157,7 +2160,7 @@ PrefabInstance:
     - target: {fileID: 3203145408851348536, guid: 4b1e27185ea5d0f49b86618e69e537ad, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1035700092}
+      objectReference: {fileID: 665647732}
     - target: {fileID: 4857699732523987642, guid: 4b1e27185ea5d0f49b86618e69e537ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.2
@@ -2507,7 +2510,7 @@ PrefabInstance:
     - target: {fileID: 3203145408851348536, guid: 4b1e27185ea5d0f49b86618e69e537ad, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1035700092}
+      objectReference: {fileID: 665647732}
     - target: {fileID: 3203145408851348536, guid: 4b1e27185ea5d0f49b86618e69e537ad, type: 3}
       propertyPath: 'wayPoints.Array.data[0]'
       value: 
@@ -3961,6 +3964,32 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6472122944523402303, guid: 4b1e27185ea5d0f49b86618e69e537ad, type: 3}
   m_PrefabInstance: {fileID: 740931318}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2068707087 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2367853087783433654, guid: 67a44bec58bfdce44abc31b2131a6be1, type: 3}
+  m_PrefabInstance: {fileID: 174179617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &2068707089
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2068707087}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 15
+  m_Center: {x: -3, y: 0, z: 8}
 --- !u!1 &2073664412
 GameObject:
   m_ObjectHideFlags: 0
