@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyFlee : MonoBehaviour
@@ -229,6 +231,7 @@ public class EnemyFlee : MonoBehaviour
         animator.applyRootMotion = true; // Allow animator to control movement
         animator.SetFloat(AnimSpeedHash, 0f); // Ensure idle animation
         animator.SetTrigger(AnimCaughtHash); // Trigger caught animation
+        StartCoroutine(HandleDeathAfterAnimation());
     }
 
     /// <summary>
@@ -289,5 +292,12 @@ public class EnemyFlee : MonoBehaviour
             Gizmos.DrawWireSphere(agent.destination, 0.2f); // Draw a small sphere at the destination
             Gizmos.DrawLine(transform.position, agent.destination); // Draw a line to the destination
         }
+    }
+
+     private IEnumerator HandleDeathAfterAnimation()
+    {
+        yield return new WaitForSeconds(5);
+        Destroy(gameObject);
+        SceneManager.LoadScene("PlayerLossMenu");
     }
 }

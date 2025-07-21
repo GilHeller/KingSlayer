@@ -581,6 +581,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2367853087783433654, guid: 67a44bec58bfdce44abc31b2131a6be1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2068707089}
+    - targetCorrespondingSourceObject: {fileID: 2367853087783433654, guid: 67a44bec58bfdce44abc31b2131a6be1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2068707090}
   m_SourcePrefab: {fileID: 100100000, guid: 67a44bec58bfdce44abc31b2131a6be1, type: 3}
 --- !u!1 &196339818
 GameObject:
@@ -4064,6 +4067,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 15
   m_Center: {x: -3, y: 0, z: 8}
+--- !u!114 &2068707090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2068707087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493667244449d944cb02a3d2ef1e1625, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: chase
+  triggeringTag: Player
 --- !u!1 &2073664412
 GameObject:
   m_ObjectHideFlags: 0
