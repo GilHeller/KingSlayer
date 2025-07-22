@@ -29,16 +29,17 @@ public class WeaponStoreManager : MonoBehaviour
     
     private List<WeaponIconController> weaponIcons = new List<WeaponIconController>();
     public WeaponIconController selectedIcon;
-    
+
     private void Start()
     {
         if (useDynamicGeneration)
         {
             LoadWeaponDataFromFolder();
         }
-        
+
         GenerateWeaponIcons();
         UpdateMoneyDisplay();
+        UpdateHealthDisplay();
     }
 
     private void LoadWeaponDataFromFolder()
@@ -78,8 +79,8 @@ public class WeaponStoreManager : MonoBehaviour
             Debug.Log($"Mapped folder '{folderName}' to weapon type: {weaponType}");
             if (weaponType == WeaponType.None) continue;
 
-            string weaponFolder = Path.Combine(iconsFolder, weaponType.ToString());
-            if (!Directory.Exists(weaponFolder)) continue;
+            string weaponFolder = Path.Combine(iconsFolder, folderName);
+            if (!Directory.Exists(weaponFolder) || weaponFolder.ToLower().Contains("knife") || weaponFolder.ToLower().Contains("sword")) continue;
 
             string[] images = Directory.GetFiles(weaponFolder, "*.png");
             Debug.Log($"Found {images.Length} images in folder '{weaponFolder}' for weapon type: {weaponType}");
@@ -111,25 +112,31 @@ public class WeaponStoreManager : MonoBehaviour
         }
     }
 
-            private void ApplyRandomStats(WeaponData weapon, WeaponType type){
+    private void ApplyRandomStats(WeaponData weapon, WeaponType type){
+        int CalaculatePrice()
+        {
+            // Example price calculation based on stats
+            return Mathf.RoundToInt(Random.Range(0.8f, 1.2f) * weapon.damage);
+        }
+
         switch (type)
         {
             case WeaponType.Knife:
                 weapon.damage = Random.Range(5, 10);
                 weapon.range = Random.Range(0.5f, 1f);
                 weapon.attackSpeed = Random.Range(1.2f, 2f);
-                weapon.price = Random.Range(50, 100);
+                weapon.price = CalaculatePrice();
                 weapon.isRanged = false;
                 break;
             case WeaponType.Sword:
                 weapon.damage = Random.Range(10, 20);
                 weapon.range = Random.Range(1.5f, 2.5f);
                 weapon.attackSpeed = Random.Range(0.8f, 1.5f);
-                weapon.price = Random.Range(150, 250);
+                weapon.price = CalaculatePrice();
                 weapon.isRanged = false;
                 break;
             case WeaponType.Shield:
-                weapon.damage = Random.Range(2, 5);
+                weapon.damage = Random.Range(-10, -5); // Negative damage for shield
                 weapon.range = Random.Range(1f, 1.2f);
                 weapon.attackSpeed = Random.Range(0.5f, 1f);
                 weapon.price = Random.Range(120, 180);
@@ -142,7 +149,16 @@ public class WeaponStoreManager : MonoBehaviour
                 weapon.price = Random.Range(200, 300);
                 weapon.isRanged = true;
                 break;
+            case WeaponType.Mana:
+                weapon.damage = Random.Range(10, 50);
+                weapon.range = Random.Range(4f, 6f);
+                weapon.attackSpeed = Random.Range(0.7f, 1.2f);
+                weapon.price = CalaculatePrice();
+                weapon.isRanged = true;
+                break;
         }
+
+        
 
         weapon.weaponModel = null;         // Assign manually or extend
         weapon.attackAnimation = null;     // Assign manually or extend
@@ -154,6 +170,7 @@ public class WeaponStoreManager : MonoBehaviour
         {
             case "sword": return WeaponType.Sword;
             case "knife": return WeaponType.Knife;
+            case "mana": return WeaponType.Mana;
             case "bow":
             case "arrow":
                 return WeaponType.Bow;
@@ -312,45 +329,53 @@ public class WeaponStoreManager : MonoBehaviour
         if (selectedIcon == null) return;
         
         WeaponData weaponToBuy = selectedIcon.weaponData;
-        
+
         if (GameManager.Instance.BuyWeapon(weaponToBuy.weaponType, weaponToBuy.price))
         {
             // Update UI
             UpdateMoneyDisplay();
             selectedIcon.SetOwned(true);
-            
+
             // Update buy button state
             storeUI.SetBuyButtonState(false);
 
             GameManager.Instance.EquipWeapon(weaponToBuy.weaponType);
-            
+
             Debug.Log($"Purchased {weaponToBuy.weaponName} for {weaponToBuy.price} coins!");
+
+            if (weaponToBuy.weaponType == WeaponType.Mana)
+            {
+                GameManager.Instance.ApplyManaUpgrade(weaponToBuy.damage);
+                UpdateHealthDisplay();
+            }
+            
+
         }
-        else
-        {
-            Debug.Log("Cannot buy weapon - not enough coins or already owned!");
-        }
+            else
+            {
+                Debug.Log("Cannot buy weapon - not enough coins or already owned!");
+            }
     }
     
     private bool CanBuyWeapon(WeaponData weapon)
     {
-        return GameManager.Instance.CanAfford(weapon.price) && !IsWeaponOwned(weapon.weaponType);
+        return GameManager.Instance.CanAfford(weapon.price) && !GameManager.Instance.IsWeaponOwned(weapon.weaponType);
     }
     
-    private bool IsWeaponOwned(WeaponType weaponType)
-    {
-        Debug.Log($"Checking if weapon {weaponType} is owned by player.");
-        Debug.Log($"Owned weapons: {string.Join(", ", GameManager.Instance.gameData.ownedWeapons)}");
-        return GameManager.Instance.gameData.ownedWeapons.Contains(weaponType);
-    }
+    
     
     private void UpdateMoneyDisplay()
     {
         storeUI.UpdateMoneyDisplay(GameManager.Instance.gameData.coins);
     }
+
+    private void UpdateHealthDisplay()
+    {
+        storeUI.UpdateLifeDisplay(GameManager.Instance.gameData.health);
+    }
     
     public bool IsWeaponOwnedByPlayer(WeaponType weaponType)
     {
-        return IsWeaponOwned(weaponType);
+        return GameManager.Instance.IsWeaponOwned(weaponType);
     }
 }

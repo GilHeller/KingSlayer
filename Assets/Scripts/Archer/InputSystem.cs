@@ -56,8 +56,8 @@ public class InputSystem : MonoBehaviour
     void Start()
     {
         moveScript = GetComponent<Movement>();
-        camCenter = Camera.main.transform.parent;
-        mainCam = Camera.main.transform;
+        // camCenter = Camera.main.transform.parent;
+        // mainCam = Camera.main.transform;
         playerAnim = GetComponent<Animator>();
         cc = GetComponent<CharacterController>();
     }
@@ -65,6 +65,19 @@ public class InputSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (mainCam == null)
+        {
+            if (Camera.main != null)
+            {
+                camCenter = Camera.main.transform.parent;
+                mainCam = Camera.main.transform;
+            }
+            else
+            {
+                return; // Wait until the camera is ready
+            }
+        }
+
         if (Input.GetAxis(input.forwardInput) != 0 || Input.GetAxis(input.strafeInput) != 0)
             RotateToCamView();
 
@@ -118,7 +131,7 @@ public class InputSystem : MonoBehaviour
                 
     }
 
-     void LateUpdate()
+    void LateUpdate()
     {
         if (isAiming)
             RotateCharacterSpine();
@@ -126,9 +139,9 @@ public class InputSystem : MonoBehaviour
 
     void RotateToCamView()
     {
-        Vector3 camCenterPos = camCenter.position;
+        Vector3 camCenterPos = mainCam.position;
 
-        Vector3 lookPoint = camCenterPos + (camCenter.forward * lookDIstance);
+        Vector3 lookPoint = camCenterPos + (mainCam.forward * lookDIstance);
         Vector3 direction = lookPoint - transform.position;
 
         Quaternion lookRotation = Quaternion.LookRotation(direction);

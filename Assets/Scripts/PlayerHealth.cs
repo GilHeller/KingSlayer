@@ -5,12 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int health = 100;
+    private int health;
     public CameraShake cameraShake;
     public AudioSource audioSource;  // Reference to AudioSource component
     public AudioClip damageSound;
     public Text healthText;
     public AudioClip gameOverSound;
+    
+    void Start()
+    {
+        int health = GameManager.Instance.gameData.health; // Initialize health from GameData
+        
+        // Initialize audio source
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+    }
 
     public void TakeDamage(int damage)
     {
@@ -22,7 +33,7 @@ public class PlayerHealth : MonoBehaviour
         {
             cameraShake.Shake();
         }
-        
+
         if (audioSource != null && damageSound != null)
         {
             audioSource.PlayOneShot(damageSound);

@@ -6,9 +6,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameData gameData;
 
+    public bool LoadFromPrevious = false;
+
     void Awake()
     {
-        PlayerPrefs.DeleteAll();
+        if (!LoadFromPrevious)
+        {
+            PlayerPrefs.DeleteAll();
+        }
         if (Instance == null)
         {
             Instance = this;
@@ -18,7 +23,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        } // Clear PlayerPrefs for testing
+        }
     }
     
     public void SaveGameData()
@@ -38,6 +43,7 @@ public class GameManager : MonoBehaviour
         else
         {
             gameData = new GameData();
+            gameData.Init();
         }
     }
     
@@ -45,10 +51,16 @@ public class GameManager : MonoBehaviour
     {
         return gameData.coins >= price;
     }
+
+    public bool IsWeaponOwned(WeaponType weaponType)
+    {
+        if (weaponType == WeaponType.Mana) return false;
+        return gameData.ownedWeapons.Contains(weaponType);
+    }
     
     public bool BuyWeapon(WeaponType weapon, int price)
     {
-        if (CanAfford(price) && !gameData.ownedWeapons.Contains(weapon))
+        if (CanAfford(price) && !IsWeaponOwned(weapon))
         {
             gameData.coins -= price;
             gameData.ownedWeapons.Add(weapon);
@@ -57,9 +69,17 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
+
+    public void ApplyManaUpgrade(int mana)
+    {
+        gameData.health = Mathf.Min(gameData.health + mana, 100);
+        SaveGameData();
+    }
     
     public void EquipWeapon(WeaponType weapon)
     {
+        Debug.Log($"Equipping weapon: {weapon}");
+        Debug.Log(gameData.currentEquippedWeapon);
         if (gameData.ownedWeapons.Contains(weapon))
         {
             gameData.currentEquippedWeapon.weaponType = weapon;

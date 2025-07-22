@@ -5,7 +5,8 @@ public enum WeaponType
     Knife,
     Sword,
     Shield,
-    Bow
+    Bow,
+    Mana
 }
 
 [System.Serializable]

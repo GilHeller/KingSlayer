@@ -98,7 +98,7 @@ public class Bow : MonoBehaviour
     public void ShowCrosshair(Vector3 crosshairPos)
     {
         if (!currentCrossHair)
-            currentCrossHair = Instantiate(crossHairPrefab) as GameObject;
+            currentCrossHair = Instantiate(crossHairPrefab);
 
         currentCrossHair.transform.position = crosshairPos;
         currentCrossHair.transform.LookAt(Camera.main.transform);

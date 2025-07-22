@@ -6,6 +6,7 @@ public class MiniMap : MonoBehaviour
 
     void LateUpdate()
     {
+        Debug.Log("Updating MiniMap position and rotation");
         if (player != null)
         {
             // Set the position of the minimap to the player's position, but keep the height constant
@@ -14,7 +15,7 @@ public class MiniMap : MonoBehaviour
             transform.position = newPosition;
 
             // Rotate the minimap to always face upwards
-            transform.rotation = Quaternion.Euler(90f, player.eulerAngles.y, 0f);
+            // transform.rotation = Quaternion.Euler(90f, player.eulerAngles.y, 0f);
         }
     }
 }

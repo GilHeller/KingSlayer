@@ -62,6 +62,7 @@ public class ThirdPersonController : MonoBehaviour
     // Punch related
     private float lastPunchTime;
     private bool canPunch = true;
+    
 
     void Start()
     {
@@ -114,12 +115,15 @@ public class ThirdPersonController : MonoBehaviour
 
     void Update()
     {
-        HandleGroundCheck();
-        HandleMovement();
-        HandleCrouch();
-        HandleCameraInput();
-        HandlePunchInput(); // New: Handle punch input
-        HandleAnimations();
+        if (!gameObject.name.ToLower().Contains("archer"))
+        {
+            HandleGroundCheck();
+            HandleCrouch();
+            HandleMovement();
+            HandleCameraInput();
+            HandlePunchInput(); // New: Handle punch input
+            HandleAnimations();
+        }
     }
 
     void LateUpdate()
@@ -235,10 +239,24 @@ public class ThirdPersonController : MonoBehaviour
             // Smooth camera movement
             playerCamera.transform.position = Vector3.Lerp(playerCamera.transform.position, desiredPosition, Time.deltaTime * 10f);
             playerCamera.transform.LookAt(cameraTarget);
+            HandleZoom();
         }
     }
 
-void HandlePunchInput()
+    void HandleZoom()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (scroll != 0)
+            {
+                playerCamera.fieldOfView -= scroll * 10f; // Adjust zoom speed as needed
+                playerCamera.fieldOfView = Mathf.Clamp(playerCamera.fieldOfView, 20f, 150f); // Clamp zoom limits
+            }
+        }
+    }
+
+    void HandlePunchInput()
 {
     // Check for left mouse button click and if cooldown allows
     if (Input.GetMouseButtonDown(0) && canPunch)

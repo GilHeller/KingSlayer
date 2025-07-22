@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
@@ -7,7 +8,7 @@ public class WeaponManager : MonoBehaviour
     public Transform weaponAttachPoint;
     public Animator playerAnimator;
 
-    public GameObject archerPrefab;
+    public GameObject playerToSwitchPrefab;
     
     private Weapon currentWeapon;
     private GameObject currentWeaponModel;
@@ -26,24 +27,40 @@ public class WeaponManager : MonoBehaviour
         HandleInput();
     }
 
-public void SwitchToArcher()
-{
-    GameObject currentPlayer = GameObject.FindGameObjectWithTag("Player");
-    if (currentPlayer == null)
+    public void SwitchPrefab()
+    {
+        Debug.Log("Switching to archer mode and replacing player model");
+
+
+        // Save current position & rotation
+        Vector3 position = transform.position;
+        Quaternion rotation = transform.rotation;
+
+        // Instantiate archer prefab
+        Debug.Log("Instantiating archer prefab at position: " + position + ", rotation: " + rotation);
+        Transform parentTransform = transform.parent;
+        GameObject newPlayer = Instantiate(playerToSwitchPrefab, position, rotation, parentTransform);
+        Debug.Log("Archer prefab instantiated: " + newPlayer.name);
+
+        // // Destroy current player
+        // Debug.Log("Destroying current player: " + currentPlayer.name);
+        Debug.Log("Current player destroyed");
+        Destroy(gameObject);
+        // System.Threading.Thread.Sleep(2000); // Wait for the new player to initialize
+        CameraController cameraController = Camera.main.GetComponent<CameraController>();
+        if (cameraController != null)
         {
-            Debug.LogError("No current player to replace!");
-            return;
+            // Reassign camera target to new player
+            cameraController.FindPlayer();
+            // cameraController.FollowPlayer();
         }
 
-    // Save current position & rotation
-    Vector3 position = currentPlayer.transform.position;
-    Quaternion rotation = currentPlayer.transform.rotation;
+        // if (newPlayer.name.Contains("Archer"))
+        // {
+        //     System.Threading.Thread.Sleep(2000); // Wait for the new player to initialize
+        //     newPlayer.GetComponent<InputSystem>().enabled = true;
+        // }
 
-    // Destroy current player
-    Destroy(currentPlayer);
-
-    // Instantiate archer prefab
-    currentPlayer = Instantiate(archerPrefab, position, rotation);
 }
     
     void HandleInput()
@@ -102,6 +119,13 @@ public void SwitchToArcher()
     public void EquipWeapon(WeaponType weaponType)
     {
         Debug.Log($"Equipping weapon: {weaponType}");
+
+        if (weaponType == WeaponType.Bow)
+        {
+            Debug.Log("Switching to archer mode");
+            SwitchPrefab();
+            return;
+        }
         // Find weapon data
         WeaponData weaponData = System.Array.Find(allWeapons, w => w.weaponType == weaponType);
         if (weaponData == null) return;
@@ -113,41 +137,41 @@ public void SwitchToArcher()
         }
         
         // Create new weapon
-        if (weaponData.weaponModel != null)
-        {
-            currentWeaponModel = Instantiate(weaponData.weaponModel, weaponAttachPoint);
-            currentWeaponModel.transform.localPosition = Vector3.zero;
-            currentWeaponModel.transform.localRotation = Quaternion.identity;
-            
-            // Get weapon component
-            currentWeapon = currentWeaponModel.GetComponent<Weapon>();
-            if (currentWeapon == null)
-            {
-                // Add appropriate weapon component based on type
-                switch (weaponType)
-                {
-                    case WeaponType.Knife:
-                        // currentWeapon = currentWeaponModel.AddComponent<Knife>();
-                        break;
-                    case WeaponType.Sword:
-                        // currentWeapon = currentWeaponModel.AddComponent<Sword>();
-                        break;
-                    case WeaponType.Shield:
-                        // currentWeapon = currentWeaponModel.AddComponent<Shield>();
-                        break;
-                    case WeaponType.Bow:
-                        // currentWeapon = currentWeaponModel.AddComponent<Bow>();
-                        SwitchToArcher();
-                        break;
-                }
-                
-                if (currentWeapon != null)
-                {
-                    currentWeapon.weaponData = weaponData;
-                }
-            }
-        }
-        
+        // if (weaponData.weaponModel != null)
+        // {
+        //     currentWeaponModel = Instantiate(weaponData.weaponModel, weaponAttachPoint);
+        //     currentWeaponModel.transform.localPosition = Vector3.zero;
+        //     currentWeaponModel.transform.localRotation = Quaternion.identity;
+
+        //     // Get weapon component
+        //     currentWeapon = currentWeaponModel.GetComponent<Weapon>();
+        //     if (currentWeapon == null)
+        //     {
+        //         // Add appropriate weapon component based on type
+        //         switch (weaponType)
+        //         {
+        //             case WeaponType.Knife:
+        //                 // currentWeapon = currentWeaponModel.AddComponent<Knife>();
+        //                 break;
+        //             case WeaponType.Sword:
+        //                 // currentWeapon = currentWeaponModel.AddComponent<Sword>();
+        //                 break;
+        //             case WeaponType.Shield:
+        //                 // currentWeapon = currentWeaponModel.AddComponent<Shield>();
+        //                 break;
+        //             case WeaponType.Bow:
+        //                 // currentWeapon = currentWeaponModel.AddComponent<Bow>();
+        //                 SwitchToArcher();
+        //                 break;
+        //         }
+
+        //         if (currentWeapon != null)
+        //         {
+        //             currentWeapon.weaponData = weaponData;
+        //         }
+        //     }
+        // }
+
         // Update animator
         if (playerAnimator != null)
         {

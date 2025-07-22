@@ -24,9 +24,9 @@ public class SceneTransition : MonoBehaviour
     
     private IEnumerator LoadSceneWithFade()
     {
-        fadeImage.GetComponent<Animator>().SetBool("fade", true);
+        fadeImage.GetComponent<Animator>().SetBool("FadeOut", true);
         // yield return new WaitUntil(() => fadeImage.color.a == 1);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         LoadScene();
     }
     public void LoadScene()
@@ -36,7 +36,8 @@ public class SceneTransition : MonoBehaviour
             GameManager.Instance.SaveGameData();
         }
         Debug.Log("Loading scene: " + targetScene);
-        
+
         SceneManager.LoadScene(targetScene);
+        fadeImage.GetComponent<Animator>().SetBool("FadeIn", true);
     }
 }

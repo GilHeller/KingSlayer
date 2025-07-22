@@ -20,6 +20,10 @@ public class CameraController : MonoBehaviour
         public float MaxClampAngle = 90;
         public float MinClampAngle = -30;
 
+        
+        public float MinZoom = 20f;
+        public float MaxZoom = 60f;
+
         [Header("Camera Collision")]
         public Transform camPosition;
         public LayerMask camCollisionLayers;
@@ -33,6 +37,7 @@ public class CameraController : MonoBehaviour
         public string MouseXAxis = "Mouse X";
         public string MouseYAxis = "Mouse Y";
         public string AimingInput = "Fire2";
+
     }
     [SerializeField]
     public CameraInputSettings inputSettings;
@@ -81,16 +86,27 @@ public class CameraController : MonoBehaviour
         }
         else
         {
+            Debug.LogWarning("Target not found, trying to find player again.");
             FindPlayer();
         }         
     }
 
-    void FindPlayer()
+    public void FindPlayer()
     {
+        Debug.Log("Finding player in the scene...");
         target = GameObject.FindGameObjectWithTag("Player").transform;
+
+
+        if (target == null)
+        {
+            Debug.LogError("Player not found in the scene. Please ensure there is a GameObject with the tag 'Player'.");
+            return;
+        }
+
+        Debug.Log("Player found: " + target.name);
     }
 
-    void FollowPlayer()
+    public void FollowPlayer()
     {
         Vector3 moveVector = Vector3.Lerp(transform.position, target.transform.position, cameraSettings.moveSpeed * Time.deltaTime);
 
@@ -115,13 +131,16 @@ public class CameraController : MonoBehaviour
 
     void ZoomCamera()
     {
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (Input.GetButton(inputSettings.AimingInput))
         {
+            Debug.Log("Zooming in while aiming");
             mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, cameraSettings.zoomFieldofView, cameraSettings.zoomSpeed * Time.deltaTime);
             UICam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, cameraSettings.zoomFieldofView, cameraSettings.zoomSpeed * Time.deltaTime);
         }
         else
         {
+            Debug.Log("Resetting zoom to original field of view");
             mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, cameraSettings.originalFieldofView, cameraSettings.zoomSpeed * Time.deltaTime);
             UICam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, cameraSettings.originalFieldofView, cameraSettings.zoomSpeed * Time.deltaTime);
         }

@@ -14,6 +14,7 @@ public class WeaponStoreUI : MonoBehaviour
     
     [Header("Player Info")]
     public TextMeshProUGUI moneyText;
+    public TextMeshProUGUI lifeText;
     
     [Header("Buy Button")]
     public Button buyButton;
@@ -22,7 +23,7 @@ public class WeaponStoreUI : MonoBehaviour
     [Header("Buy Button States")]
     public Color buyButtonNormalColor = Color.green;
     public Color buyButtonDisabledColor = Color.gray;
-    public string buyButtonNormalText = "BUY";
+    public string buyButtonNormalText = "Buy";
     public string buyButtonOwnedText = "OWNED";
     public string buyButtonNoMoneyText = "NOT ENOUGH MONEY";
     
@@ -30,6 +31,7 @@ public class WeaponStoreUI : MonoBehaviour
     
     private void Start()
     {
+        // Initialize the UI elements
         storeManager = FindFirstObjectByType<WeaponStoreManager>();
         if (storeManager == null)
         {
@@ -42,14 +44,26 @@ public class WeaponStoreUI : MonoBehaviour
             buyButton.onClick.AddListener(() => storeManager.BuySelectedWeapon());
         }
     }
-    
+
     public void UpdateWeaponInfo(WeaponData weapon)
     {
         if (weaponNameText != null)
             weaponNameText.text = weapon.weaponName.Replace(" [Paint]", "");
 
-        if (weaponPowerText != null)
-            weaponPowerText.text = $"${(weapon.damage > 0 ? "Damage" : "Shield")}: {weapon.damage}";
+        if (weaponPowerText != null) {
+            if (weapon.weaponType == WeaponType.Shield)
+            {
+                weaponPowerText.text = $"Shield: {Mathf.Abs(weapon.damage)}";
+            }
+            else if (weapon.weaponType == WeaponType.Bow)
+            {
+                weaponPowerText.text = $"Range: {weapon.range:F1}m, Speed: {weapon.attackSpeed:F2}s";
+            }
+            else if (weapon.weaponType == WeaponType.Mana)
+            {
+                weaponPowerText.text = $"Mana Upgrade: {weapon.damage}";
+            }
+    }
         
         if (weaponPriceText != null)
             weaponPriceText.text = $"${weapon.price}";
@@ -63,13 +77,32 @@ public class WeaponStoreUI : MonoBehaviour
         if (moneyText != null)
             moneyText.text = $"Money: ${money}";
     }
+
+    public void UpdateLifeDisplay(int life)
+    {
+        if (lifeText != null)
+            lifeText.text = $"Health: {life}";
+            
+            switch (life)
+            {
+                case > 75:
+                    lifeText.color = Color.green;
+                    break;
+                case > 25 and <= 75:
+                    lifeText.color = Color.yellow;
+                    break;
+                default:
+                    lifeText.color = Color.red;
+                    break;
+            }
+    }
     
     public void SetBuyButtonState(bool canBuy)
     {
         if (buyButton == null) return;
-        
+
         buyButton.interactable = canBuy;
-        
+
         if (buyButtonText != null)
         {
             if (canBuy)
@@ -83,9 +116,13 @@ public class WeaponStoreUI : MonoBehaviour
                 if (storeManager.selectedIcon != null)
                 {
                     WeaponData selectedWeapon = storeManager.selectedIcon.WeaponData;
-                    if (storeManager.IsWeaponOwnedByPlayer(selectedWeapon.weaponType))
+                    if (storeManager.IsWeaponOwnedByPlayer(selectedWeapon.weaponType) && selectedWeapon.weaponType != WeaponType.Mana)
                     {
                         buyButtonText.text = buyButtonOwnedText;
+                    }
+                    else if (GameManager.Instance.CanAfford(selectedWeapon.price))
+                    {
+                        buyButtonText.text = buyButtonNormalText;
                     }
                     else
                     {
