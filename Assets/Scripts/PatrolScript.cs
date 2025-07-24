@@ -14,7 +14,7 @@ public class PatrolScript : MonoBehaviour
     [Header("Vision Settings")]
     public float visionDistance = 10f;
     public float visionAngle = 45f;
-    public Transform player;
+    private Transform player;
 
     private int currentWayPoint = 0;
     private CharacterController controller;
@@ -38,12 +38,20 @@ public class PatrolScript : MonoBehaviour
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         patrolHealth = GetComponent<EnemyHealth>();
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
     {
         if (wayPoints.Length == 0 || player == null) return;
         if (patrolHealth != null && patrolHealth.currentHealth <= 0 ) return;
+
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+            if (player == null) return;
+        }
 
         DetectPlayer();
 

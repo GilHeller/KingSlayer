@@ -8,6 +8,8 @@ public class CollectCoins : MonoBehaviour
     public AudioClip coinSound;
     private AudioSource audioSource;
 
+    public int coinValue = 10;
+
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -22,7 +24,7 @@ public class CollectCoins : MonoBehaviour
     {
         if (coinText != null)
         {
-            coinText.text = "Coins: " + coinCount;
+            coinText.text = "Coins: " + GameManager.Instance.gameData.coins;
         }
 
     }
@@ -32,7 +34,7 @@ public class CollectCoins : MonoBehaviour
     {
         if (other.CompareTag("Coin"))
         {
-            coinCount++;
+            GameManager.Instance.AddCoins(coinValue);
             UpdateCoinUI();
             Debug.Log("Coin Collected!");
 

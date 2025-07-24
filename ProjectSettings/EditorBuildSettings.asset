@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayerLossMenu.unity
     guid: 0d909fff435a4204f8dd7ef718bf5575
+  - enabled: 1
+    path: Assets/Scenes/Store.unity
+    guid: 369f051670a1f7b40932f624105cb9ae
+  - enabled: 1
+    path: Assets/Scenes/Inventory.unity
+    guid: 3e09500062b50d744893da40a93981f5
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

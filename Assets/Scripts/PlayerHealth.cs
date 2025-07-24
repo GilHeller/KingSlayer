@@ -74,6 +74,8 @@ public class PlayerHealth : MonoBehaviour
             playerAnimator.SetTrigger(takeDamageAnimationTrigger);
         }
 
+        GameManager.Instance.gameData.health = (int)currentHealth;
+
         // Check death
         if (currentHealth <= 0)
         {

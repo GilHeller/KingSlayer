@@ -9,12 +9,23 @@ public class MenuScript : MonoBehaviour
     public Button exitText;
     public Button yesButton;
     public Button noButton;
+    public GameObject gameOverText;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         quitMenu.enabled = false;
+        gameOverText.SetActive(GameData.isGameOver);
 
+        Time.timeScale = 1f;
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
+        {
+            gameOverText.SetActive(false);
+        }
     }
 
     public void ExitPress()
@@ -33,6 +44,7 @@ public class MenuScript : MonoBehaviour
 
     public void StartLevel()
     {
+        Debug.Log("StartLevel");
         SceneManager.LoadScene("Play");
     }
 
