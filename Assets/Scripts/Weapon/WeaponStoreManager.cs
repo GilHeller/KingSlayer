@@ -3,7 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Linq;
-using UnityEditor;
+using UnityEditor;  
+using System.Collections;
+
 
 
 public class WeaponStoreManager : MonoBehaviour
@@ -13,7 +15,7 @@ public class WeaponStoreManager : MonoBehaviour
     
     [Header("Dynamic Generation")]
     public bool useDynamicGeneration = true;
-    private string iconsFolder = "Assets/images/Icons";
+    private string iconsFolder = "Assets/Resources/Icons";
     
     [Header("Manual Setup (if not using dynamic)")]
     public WeaponData[] availableWeapons;
@@ -29,6 +31,11 @@ public class WeaponStoreManager : MonoBehaviour
     
     private List<WeaponIconController> weaponIcons = new List<WeaponIconController>();
     public WeaponIconController selectedIcon;
+
+
+    public List<Sprite> ShieldIcons = new List<Sprite>();
+    public List<Sprite> ManaIcons = new List<Sprite>();
+    public List<Sprite> BowIcons = new List<Sprite>();
 
     private void Start()
     {
@@ -71,45 +78,80 @@ public class WeaponStoreManager : MonoBehaviour
 
         var subfolders = Directory.GetDirectories(iconsFolder);
         Debug.Log($"Found {subfolders.Length} subfolders in {iconsFolder}");
-        foreach (var folder in subfolders)
+
+
+
+        foreach (var icon in ManaIcons)
         {
-            Debug.Log($"Processing folder: {folder}");
-            string folderName = Path.GetFileName(folder);
-            WeaponType weaponType = MapFolderToWeaponType(folderName);
-            Debug.Log($"Mapped folder '{folderName}' to weapon type: {weaponType}");
-            if (weaponType == WeaponType.None) continue;
+            WeaponData weapon = ScriptableObject.CreateInstance<WeaponData>();
+            weapon.weaponType = WeaponType.Mana;
+            weapon.weaponName = icon.name;
+            weapon.icon = icon;
 
-            string weaponFolder = Path.Combine(iconsFolder, folderName);
-            if (!Directory.Exists(weaponFolder) || weaponFolder.ToLower().Contains("knife") || weaponFolder.ToLower().Contains("sword")) continue;
+            ApplyRandomStats(weapon, weapon.weaponType);
 
-            string[] images = Directory.GetFiles(weaponFolder, "*.png");
-            Debug.Log($"Found {images.Length} images in folder '{weaponFolder}' for weapon type: {weaponType}");
-
-            foreach (var imagePath in images)
-            {
-                Debug.Log($"Processing image: {imagePath}");
-                string unityPath = imagePath.Replace(Application.dataPath, "Assets").Replace("\\", "/");
-                Sprite icon = AssetDatabase.LoadAssetAtPath<Sprite>(unityPath);
-                if (icon == null) continue;
-
-                // Create WeaponData ScriptableObject
-                WeaponData weapon = ScriptableObject.CreateInstance<WeaponData>();
-                string fileName = Path.GetFileNameWithoutExtension(imagePath);
-                weapon.weaponType = weaponType;
-                weapon.weaponName = fileName;
-                weapon.icon = icon;
-
-                availableWeapons = availableWeapons.Append(weapon).ToArray();
-
-                // Randomized per weapon type
-                ApplyRandomStats(weapon, weaponType);
-
-                // string savePath = $"{outputFolder}/{weapon.weaponName}_{weaponType}.asset";
-                // AssetDatabase.CreateAsset(weapon, savePath);
-                // EditorUtility.SetDirty(weapon);
-                count++;
-            }
+            availableWeapons = availableWeapons.Append(weapon).ToArray();
+            count++;
         }
+
+        foreach (var icon in ShieldIcons)
+        {
+            WeaponData weapon = ScriptableObject.CreateInstance<WeaponData>();
+            weapon.weaponType = WeaponType.Shield;
+            weapon.weaponName = icon.name;
+            weapon.icon = icon;
+
+            ApplyRandomStats(weapon, weapon.weaponType);
+
+            availableWeapons = availableWeapons.Append(weapon).ToArray();
+            count++;
+        }
+        
+        foreach (var icon in BowIcons)
+        {
+            WeaponData weapon = ScriptableObject.CreateInstance<WeaponData>();
+            weapon.weaponType = WeaponType.Shield;
+            weapon.weaponName = icon.name;
+            weapon.icon = icon;
+
+            ApplyRandomStats(weapon, weapon.weaponType);
+
+            availableWeapons = availableWeapons.Append(weapon).ToArray();
+            count++;
+        }
+
+
+            // string weaponFolder = Path.Combine(iconsFolder, folderName);
+        // if (!Directory.Exists(weaponFolder) || weaponFolder.ToLower().Contains("knife") || weaponFolder.ToLower().Contains("sword")) continue;
+
+        // string[] images = Directory.GetFiles(weaponFolder, "*.png");
+        // Debug.Log($"Found {images.Length} images in folder '{weaponFolder}' for weapon type: {weaponType}");
+
+        // foreach (var imagePath in images)
+        // {
+        //     Debug.Log($"Processing image: {imagePath}");
+        //     string unityPath = imagePath.Replace(Application.dataPath, "Assets").Replace("\\", "/");
+        //     Sprite icon = AssetDatabase.LoadAssetAtPath<Sprite>(unityPath);
+        //     if (icon == null) continue;
+
+        //     // Create WeaponData ScriptableObject
+        //     WeaponData weapon = ScriptableObject.CreateInstance<WeaponData>();
+        //     string fileName = Path.GetFileNameWithoutExtension(imagePath);
+        //     weapon.weaponType = weaponType;
+        //     weapon.weaponName = fileName;
+        //     weapon.icon = icon;
+
+        //     availableWeapons = availableWeapons.Append(weapon).ToArray();
+
+        //     // Randomized per weapon type
+        //     ApplyRandomStats(weapon, weaponType);
+
+        //     // string savePath = $"{outputFolder}/{weapon.weaponName}_{weaponType}.asset";
+        //     // AssetDatabase.CreateAsset(weapon, savePath);
+        //     // EditorUtility.SetDirty(weapon);
+        //     count++;
+        // }
+
     }
 
     private void ApplyRandomStats(WeaponData weapon, WeaponType type){
