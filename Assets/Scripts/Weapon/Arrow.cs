@@ -10,6 +10,8 @@ public class Arrow : MonoBehaviour
     public float destroyTime = 10f;
     AudioSource arrowAudio;
 
+    public GameObject impactEffectPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,12 +29,20 @@ public class Arrow : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag != "Player")
+        if (collision.gameObject.tag != "Player")
         {
             arrowAudio.Play();
             disableRotation = true;
             rb.isKinematic = true;
             bx.isTrigger = true;
-        } 
+
+            // Instantiate impact effect
+            if (impactEffectPrefab != null && collision.gameObject.tag == "Enemy")
+            {
+                GameObject impactEffect = Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
+                Destroy(impactEffect, 2f); // Destroy the effect after 2 seconds 
+            }
+        }
+
     }
 }

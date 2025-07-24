@@ -32,6 +32,9 @@ public class WeaponStoreUI : MonoBehaviour
     private void Start()
     {
         // Initialize the UI elements
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         storeManager = FindFirstObjectByType<WeaponStoreManager>();
         if (storeManager == null)
         {

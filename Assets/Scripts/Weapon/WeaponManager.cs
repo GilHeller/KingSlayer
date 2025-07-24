@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -18,7 +19,8 @@ public class WeaponManager : MonoBehaviour
         // Equip the currently equipped weapon from save data
         if (GameManager.Instance != null)
         {
-            EquipWeapon(GameManager.Instance.gameData.currentEquippedWeapon.weaponType);
+
+            EquipWeapon(GameManager.Instance.gameData.currentEquippedWeapon.weaponType, false);
         }
     }
     
@@ -116,11 +118,11 @@ public class WeaponManager : MonoBehaviour
         }
     }
     
-    public void EquipWeapon(WeaponType weaponType)
+    public void EquipWeapon(WeaponType weaponType, bool switchPrefab = true)
     {
         Debug.Log($"Equipping weapon: {weaponType}");
 
-        if (weaponType == WeaponType.Bow)
+        if (weaponType == WeaponType.Bow && switchPrefab)
         {
             Debug.Log("Switching to archer mode");
             SwitchPrefab();

@@ -25,6 +25,12 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (GameManager.Instance.gameData.currentEquippedWeapon.weaponType == WeaponType.Shield)
+        {
+            // If the player has a shield equipped, reduce damage
+            damage = damage += GameManager.Instance.gameData.currentEquippedWeapon.damage;
+            Debug.Log("Shield is active, damage reduced to: " + damage);
+        }   
         health -= damage;
         Debug.Log("Player Health: " + health);
         UpdateHealthText();
