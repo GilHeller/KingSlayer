@@ -8,7 +8,7 @@ public class GameData
     public int health = 100; // Starting health
     public List<WeaponType> ownedWeapons = new List<WeaponType>();
     // public WeaponType currentEquippedWeapon = WeaponType.None;
-    public  WeaponData currentEquippedWeapon;
+    public WeaponData currentEquippedWeapon;
 
     public GameObject activePlayer;
 
@@ -22,5 +22,14 @@ public class GameData
         currentEquippedWeapon = ScriptableObject.CreateInstance<WeaponData>();
         activePlayer = GameObject.FindGameObjectWithTag("Player") ?? null;
         spawnPoint = Vector3.zero; // Default spawn point   
+    }
+    
+    void Update()
+    {
+        // Update the active player reference if it changes
+        if (activePlayer == null)
+        {
+            activePlayer = GameObject.FindGameObjectWithTag("Player");
+        }
     }
 }

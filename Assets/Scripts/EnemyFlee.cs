@@ -298,6 +298,6 @@ public class EnemyFlee : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         Destroy(gameObject);
-        SceneManager.LoadScene("PlayerLossMenu");
+        SceneManager.LoadScene("PlayerWonMenu");
     }
 }

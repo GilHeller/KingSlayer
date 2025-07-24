@@ -46,13 +46,17 @@ public class ThirdPersonController : MonoBehaviour
     public float groundDistance = 0.2f;
     public LayerMask groundMask = 1; // Ground layer
 
+    [Header("Replaceable Objects")]
+    public GameObject CubePrefab;
+    public GameObject CubePrefab2;
+
     private Camera playerCamera;
     private CharacterController characterController;
     private float verticalRotation = 0;
     private float horizontalRotation = 0;
     private float turnSmoothVelocity;
     private bool isGrounded;
-    private Vector3 velocity;
+    private Vector3 velocity = Vector3.zero ;
     private float originalHeight;
 
     // Animation state tracking
@@ -187,6 +191,11 @@ public class ThirdPersonController : MonoBehaviour
 
         // Handle gravity
         velocity.y += gravity * Time.deltaTime;
+
+        Debug.Log("Velocity: " + velocity);
+
+        Debug.Log("CharacterController: " + characterController);
+        Debug.Log("CharacterController.isGrounded: " + characterController.isGrounded);
         characterController.Move(velocity * Time.deltaTime);
 
         // Jump
@@ -307,6 +316,16 @@ public class ThirdPersonController : MonoBehaviour
                 enemyHealth.TakeDamage(punchDamage);
                 Debug.Log($"Hit {hit.collider.name} for {punchDamage} damage!");
                 // You might add effects here like particle systems, sound effects
+            }
+            else if (CubePrefab && hit.collider.name == CubePrefab?.name)
+            {
+                Debug.Log("Replace object");
+                CubePrefab.GetComponent<ReplaceWithOther>()?.ReplaceNow();
+            }
+            else if (CubePrefab2 && hit.collider.name == CubePrefab2?.name)
+            {
+                Debug.Log("Replace object");
+                CubePrefab2.GetComponent<ReplaceWithOther>()?.ReplaceNow();
             }
             else
             {
