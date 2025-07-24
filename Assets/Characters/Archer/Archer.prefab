@@ -276,7 +276,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5862914521310675581}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a4c591691c4a814898761958144e5a9, type: 3}
   m_Name: 
@@ -296,20 +296,19 @@ MonoBehaviour:
   spineOffset: {x: 0, y: 0, z: 0}
   lookAtPoint: 2.8
   gravityValue: 1.2
-  bowScript: {fileID: 1466735871880141084}
-  testAim: 0
   cameraTarget: {fileID: 0}
   mouseSensitivity: 2
   maxLookAngle: 80
   minLookAngle: -30
   cameraDistance: 5
   cameraHeight: 2
+  originalFieldofView: 70
+  zoomFieldofView: 20
   camCollisionLayers:
     serializedVersion: 2
     m_Bits: 0
-  AimingInput: Fire2
-  originalFieldofView: 70
-  zoomFieldofView: 20
+  bowScript: {fileID: 1466735871880141084}
+  testAim: 0
 --- !u!1 &6292281232783048091
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,6 +810,7 @@ MonoBehaviour:
     arrowPos: {fileID: 6285893852825707055}
     arrowEquipParent: {fileID: 7766362515947806325}
     arrowForce: 120
+    arrowSpeed: 10
     EquipPos: {fileID: 996904423987974687}
     UnEquipPos: {fileID: 8091487789220172764}
     UnEquipParent: {fileID: 8597681670877016905}

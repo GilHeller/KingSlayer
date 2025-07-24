@@ -49,6 +49,8 @@ public class PatrolScript : MonoBehaviour
 
         if (player == null)
         {
+            Debug.LogWarning("Player not found, trying to find by tag.");
+            // Try to find the player by tag if not assigned
             player = GameObject.FindGameObjectWithTag("Player").transform;
             if (player == null) return;
         }

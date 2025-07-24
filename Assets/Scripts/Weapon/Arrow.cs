@@ -36,8 +36,8 @@ public class Arrow : MonoBehaviour
             rb.isKinematic = true;
             bx.isTrigger = true;
 
-            // Instantiate impact effect
-            if (impactEffectPrefab != null && collision.gameObject.tag == "Enemy")
+            // Instantiate impact effect if collison raycast layer is Enemy
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
                 GameObject impactEffect = Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
                 Destroy(impactEffect, 2f); // Destroy the effect after 2 seconds 
