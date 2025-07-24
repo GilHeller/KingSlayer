@@ -3,12 +3,11 @@ using UnityEngine.UI;
 
 public class CollectCoins : MonoBehaviour
 {
-    private int coinCount = 0;
     public Text coinText;
     public AudioClip coinSound;
     private AudioSource audioSource;
 
-    public int coinValue = 10;
+    public int coinValue = 50;
 
     private void Start()
     {

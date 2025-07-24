@@ -10,11 +10,17 @@ public class GameData
     // public WeaponType currentEquippedWeapon = WeaponType.None;
     public  WeaponData currentEquippedWeapon;
 
+    public GameObject activePlayer;
+
+    public Vector3 spawnPoint;
+
     public static bool isGameOver = false;
 
     public void Init()
     {
         // General initialization for currentEquippedWeapon
         currentEquippedWeapon = ScriptableObject.CreateInstance<WeaponData>();
+        activePlayer = GameObject.FindGameObjectWithTag("Player") ?? null;
+        spawnPoint = Vector3.zero; // Default spawn point   
     }
 }

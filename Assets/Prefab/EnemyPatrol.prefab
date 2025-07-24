@@ -445,19 +445,8 @@ PrefabInstance:
       addedObject: {fileID: 8029142430339898003}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9fdc04416a8f5e6438c3c9879166f51a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3203145408851348536}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9fdc04416a8f5e6438c3c9879166f51a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 4944288108247482452}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9fdc04416a8f5e6438c3c9879166f51a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1574248419481479127}
   m_SourcePrefab: {fileID: 100100000, guid: 9fdc04416a8f5e6438c3c9879166f51a, type: 3}
---- !u!95 &2372809579003746767 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 9fdc04416a8f5e6438c3c9879166f51a, type: 3}
-  m_PrefabInstance: {fileID: 8180643675494753374}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8506672326091490229 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9fdc04416a8f5e6438c3c9879166f51a, type: 3}
@@ -493,31 +482,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &3203145408851348536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9026926441444677903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f07a859d00ee62e499392d71747b77b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wayPoints:
-  - {fileID: 8244191379564876567}
-  - {fileID: 4857699732523987642}
-  patrolSpeed: 2.5
-  chaseSpeed: 4.5
-  rotationSpeed: 4.5
-  gravity: 9.81
-  visionDistance: 15
-  visionAngle: 90
-  player: {fileID: 0}
-  punchDistance: 1.5
-  punchCooldown: 1
-  damageAmount: 10
 --- !u!136 &4944288108247482452
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -541,24 +505,3 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &1574248419481479127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9026926441444677903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 893a4a33252e5ad47a1380fddd4da47c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 100
-  maxHealth: 100
-  ouchSounds:
-  - {fileID: 8300000, guid: aed3346cd9486ff43b4a12da25ea1a4c, type: 3}
-  - {fileID: 8300000, guid: 9404f381b63e0e041b4c5076ea6b597e, type: 3}
-  enemyAnimator: {fileID: 2372809579003746767}
-  takeDamageAnimationTrigger: TakeDamage
-  deathAnimationTrigger: Die
-  deathAnimationDuration: 2

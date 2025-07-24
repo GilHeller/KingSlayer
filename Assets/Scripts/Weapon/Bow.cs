@@ -14,7 +14,7 @@ public class Bow : MonoBehaviour
         public Transform arrowEquipParent;
         public float arrowForce = 3;
 
-        public float arrowSpeed = 50f; // Speed of the arrow when fired
+        public float arrowSpeed = 10f; // Speed of the arrow when fired
 
         [Header("Bow Equip & UnEquip Settings")]
         public Transform EquipPos;
@@ -117,57 +117,57 @@ public class Bow : MonoBehaviour
         bowAudio.PlayOneShot(bowSettings.pullStringAudio);
     }
 
-    // public void Fire(Vector3 hitPoint)
-    // {
-    //     if (bowSettings.arrowCount < 1)
-    //         return;
-
-    //     bowAudio.PlayOneShot(bowSettings.releaseStringAudio);
-    //     Vector3 dir = hitPoint - bowSettings.arrowPos.position;
-    //     currentArrow = Instantiate(bowSettings.arrowPrefab, bowSettings.arrowPos.position, bowSettings.arrowPos.rotation) as Rigidbody;
-
-    //     currentArrow.AddForce(dir * bowSettings.arrowForce, ForceMode.Force);
-
-    //     bowSettings.arrowCount -= 1;
-    // }
-    public void Fire(Vector3 targetPoint)
+    public void Fire(Vector3 hitPoint)
     {
-        Vector3 start = transform.position + transform.forward * 0.5f; // Start position slightly in front of the bow
-        Vector3 target = targetPoint;
+        if (bowSettings.arrowCount < 1)
+            return;
 
-        Vector3 velocity;
-        bool success = CalculateBallisticVelocity(start, target, bowSettings.arrowSpeed, out velocity);
+        bowAudio.PlayOneShot(bowSettings.releaseStringAudio);
+        Vector3 dir = hitPoint - bowSettings.arrowPos.position;
+        currentArrow = Instantiate(bowSettings.arrowPrefab, bowSettings.arrowPos.position, bowSettings.arrowPos.rotation) as Rigidbody;
 
-        Rigidbody arrow = Instantiate(bowSettings.arrowPrefab, start, Quaternion.LookRotation(velocity));
-        arrow.linearVelocity = success ? velocity : (target - start).normalized * bowSettings.arrowSpeed;
+        currentArrow.AddForce(dir * bowSettings.arrowForce, ForceMode.Force);
+
+        bowSettings.arrowCount -= 1;
     }
+//     public void Fire(Vector3 targetPoint)
+//     {
+//         Vector3 start = transform.position + transform.forward * 0.5f; // Start position slightly in front of the bow
+//         Vector3 target = targetPoint;
+
+//         Vector3 velocity;
+//         bool success = CalculateBallisticVelocity(start, target, bowSettings.arrowSpeed, out velocity);
+
+//         Rigidbody arrow = Instantiate(bowSettings.arrowPrefab, start, Quaternion.LookRotation(velocity));
+//         arrow.linearVelocity = success ? velocity : (target - start).normalized * bowSettings.arrowSpeed;
+//     }
     
-    // Solves for a parabolic trajectory from start to target given initial speed
-    bool CalculateBallisticVelocity(Vector3 start, Vector3 target, float speed, out Vector3 velocity)
-    {
-    Vector3 toTarget = target - start;
-    Vector3 toTargetXZ = new Vector3(toTarget.x, 0, toTarget.z);
-    float y = toTarget.y;
-    float xz = toTargetXZ.magnitude;
+//     // Solves for a parabolic trajectory from start to target given initial speed
+//     bool CalculateBallisticVelocity(Vector3 start, Vector3 target, float speed, out Vector3 velocity)
+//     {
+//     Vector3 toTarget = target - start;
+//     Vector3 toTargetXZ = new Vector3(toTarget.x, 0, toTarget.z);
+//     float y = toTarget.y;
+//     float xz = toTargetXZ.magnitude;
 
-    float gravity = Physics.gravity.y * -1; // Usually -9.81
+//     float gravity = Physics.gravity.y * -1; // Usually -9.81
 
-    float speedSquared = speed * speed;
-    float discriminant = speedSquared * speedSquared - gravity * (gravity * xz * xz + 2 * y * speedSquared);
+//     float speedSquared = speed * speed;
+//     float discriminant = speedSquared * speedSquared - gravity * (gravity * xz * xz + 2 * y * speedSquared);
 
-    if (discriminant < 0)
-    {
-        // No solution
-        velocity = Vector3.zero;
-        return false;
-    }
+//     if (discriminant < 0)
+//     {
+//         // No solution
+//         velocity = Vector3.zero;
+//         return false;
+//     }
 
-    float root = Mathf.Sqrt(discriminant);
-    float highAngle = Mathf.Atan2(speedSquared + root, gravity * xz); // You can use high or low angle
-    float angle = highAngle;
+//     float root = Mathf.Sqrt(discriminant);
+//     float highAngle = Mathf.Atan2(speedSquared + root, gravity * xz); // You can use high or low angle
+//     float angle = highAngle;
 
-    Vector3 directionXZ = toTargetXZ.normalized;
-    velocity = directionXZ * Mathf.Cos(angle) * speed + Vector3.up * Mathf.Sin(angle) * speed;
-    return true;
-}
+//     Vector3 directionXZ = toTargetXZ.normalized;
+//     velocity = directionXZ * Mathf.Cos(angle) * speed + Vector3.up * Mathf.Sin(angle) * speed;
+//     return true;
+// }
 }

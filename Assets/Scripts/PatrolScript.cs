@@ -39,22 +39,15 @@ public class PatrolScript : MonoBehaviour
         animator = GetComponent<Animator>();
         patrolHealth = GetComponent<EnemyHealth>();
 
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameManager.Instance.gameData.activePlayer?.transform;
     }
 
     void Update()
     {
-        if (wayPoints.Length == 0 || player == null) return;
+        if (wayPoints.Length == 0) return;
         if (patrolHealth != null && patrolHealth.currentHealth <= 0 ) return;
 
-        if (player == null)
-        {
-            Debug.LogWarning("Player not found, trying to find by tag.");
-            // Try to find the player by tag if not assigned
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-            if (player == null) return;
-        }
-
+        
         DetectPlayer();
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -98,6 +91,12 @@ public class PatrolScript : MonoBehaviour
 
     void DetectPlayer()
     {
+
+        Debug.LogWarning("Player not found, trying to find by tag.");
+        // Try to find the player by tag if not assigned
+        player = GameManager.Instance.gameData.activePlayer?.transform;
+        if (player == null) return;
+
         Vector3 toPlayer = player.position - transform.position;
         toPlayer.y = 0;
 

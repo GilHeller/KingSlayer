@@ -74,10 +74,10 @@ public class PlayerHealth : MonoBehaviour
             playerAnimator.SetTrigger(takeDamageAnimationTrigger);
         }
 
-        GameManager.Instance.gameData.health = (int)currentHealth;
+        GameManager.Instance.gameData.health = (int)currentHealth;    
 
         // Check death
-        if (currentHealth <= 0)
+        if (GameManager.Instance.gameData.health <= 0)
         {
             Die();
         }
@@ -87,7 +87,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (healthText != null)
         {
-            healthText.text = "Health: " + Mathf.RoundToInt(currentHealth).ToString();
+            healthText.text = "Health: " + GameManager.Instance.gameData.health.ToString();
         }
     }
 

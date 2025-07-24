@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: df38aac43e5637c4a937bfcaf3e785c5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - solidCube: {fileID: 919132149155446097, guid: b0d1d0367707dbd40a8a4e48dce590cb, type: 3}
+  - fracturedVersion: {fileID: 919132149155446097, guid: b0d1d0367707dbd40a8a4e48dce590cb, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -67,6 +67,14 @@ public class ThirdPersonController : MonoBehaviour
     void Start()
     {
         // Get or create character controller (better for character movement than Rigidbody)
+
+        if (GameManager.Instance.gameData.spawnPoint != Vector3.zero)
+        {
+            gameObject.transform.position = GameManager.Instance.gameData.spawnPoint; // Default spawn point
+        } else
+        {
+            GameManager.Instance.gameData.spawnPoint = transform.position; // Set initial spawn point
+        }
         characterController = GetComponent<CharacterController>();
         if (characterController == null)
         {

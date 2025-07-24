@@ -9,12 +9,12 @@ public class MiniMap : MonoBehaviour
         Debug.Log("Updating MiniMap position and rotation");
         if (player == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+            player = GameManager.Instance.gameData.activePlayer?.transform;
         }
         
          // Set the position of the minimap to the player's position, but keep the height constant
             Vector3 newPosition = player.position;
-            newPosition.y = transform.position.y; // Keep the minimap at a fixed height
+            newPosition.y = player.position.y + 2; // Keep the minimap at a fixed height
             transform.position = newPosition;
 
             // Rotate the minimap to always face upwards
