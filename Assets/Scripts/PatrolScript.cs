@@ -39,7 +39,17 @@ public class PatrolScript : MonoBehaviour
         animator = GetComponent<Animator>();
         patrolHealth = GetComponent<EnemyHealth>();
 
-        player = GameManager.Instance.gameData.activePlayer?.transform;
+        GameObject currentPlayer = GameManager.Instance.gameData.activePlayer;
+
+        if (currentPlayer && currentPlayer.transform != null)
+        {
+            player = currentPlayer.transform;
+        }
+        else
+        {
+            Debug.LogWarning("Player not found, trying to find by tag.");
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        }
     }
 
     void Update()
@@ -47,6 +57,15 @@ public class PatrolScript : MonoBehaviour
         if (wayPoints.Length == 0) return;
         if (patrolHealth != null && patrolHealth.currentHealth <= 0 ) return;
 
+        if (player == null)
+        {
+            player = GameManager.Instance.gameData.activePlayer?.transform;
+            if (player == null)
+            {
+                Debug.LogWarning("Player not found, cannot patrol.");
+                return;
+            }
+        }
         
         DetectPlayer();
 
@@ -91,8 +110,11 @@ public class PatrolScript : MonoBehaviour
 
     void DetectPlayer()
     {
-
-        Debug.LogWarning("Player not found, trying to find by tag.");
+        if (GameManager.Instance.gameData?.activePlayer == null)
+        {
+            Debug.LogWarning("Active player not found in GameManager.");
+            return;
+        }
         // Try to find the player by tag if not assigned
         player = GameManager.Instance.gameData.activePlayer?.transform;
         if (player == null) return;

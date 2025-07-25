@@ -48,7 +48,7 @@ public class Checkpoint : MonoBehaviour
         //     player.transform.position = spawnPoint.position;
         // }
         // Store the spawn point in GameManager
-        GameManager.Instance.gameData.spawnPoint = spawnPoint.position;
+        GameManager.Instance.gameData.spawnPoint = transform.position;
 
         if (characterController != null) characterController.enabled = true;
 

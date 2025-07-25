@@ -110,7 +110,7 @@ public class WeaponStoreManager : MonoBehaviour
         foreach (var icon in BowIcons)
         {
             WeaponData weapon = ScriptableObject.CreateInstance<WeaponData>();
-            weapon.weaponType = WeaponType.Shield;
+            weapon.weaponType = WeaponType.Bow;
             weapon.weaponName = icon.name;
             weapon.icon = icon;
 

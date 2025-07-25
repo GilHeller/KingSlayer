@@ -306,7 +306,7 @@ MonoBehaviour:
   rotationSpeed: 4.5
   gravity: 9.81
   visionDistance: 10
-  visionAngle: 45
+  visionAngle: 90
   punchDistance: 1.5
   punchCooldown: 1
   damageAmount: 10
@@ -1330,7 +1330,7 @@ MonoBehaviour:
   rotationSpeed: 4.5
   gravity: 9.81
   visionDistance: 10
-  visionAngle: 45
+  visionAngle: 90
   punchDistance: 1.5
   punchCooldown: 1
   damageAmount: 10
@@ -1600,7 +1600,7 @@ MonoBehaviour:
   rotationSpeed: 4.5
   gravity: 9.81
   visionDistance: 10
-  visionAngle: 45
+  visionAngle: 90
   punchDistance: 1.5
   punchCooldown: 1
   damageAmount: 10
@@ -1958,7 +1958,7 @@ MonoBehaviour:
   rotationSpeed: 4.5
   gravity: 9.81
   visionDistance: 10
-  visionAngle: 45
+  visionAngle: 90
   punchDistance: 1.5
   punchCooldown: 1
   damageAmount: 10
@@ -2280,6 +2280,11 @@ MonoBehaviour:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8937782556490566767, guid: 7b6645be9693c7d46bfa4f841c1f11ea, type: 3}
   m_PrefabInstance: {fileID: 1019138751}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &647579676 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1864943358213058563, guid: f6df09b5dd53dda458841bb2ad1b29a9, type: 3}
+  m_PrefabInstance: {fileID: 374050544562357704}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &656183338 stripped
 Transform:
@@ -4340,6 +4345,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1904397220}
   - {fileID: 665647732}
   - {fileID: 1617653446}
   m_Father: {fileID: 0}
@@ -4623,7 +4629,7 @@ MonoBehaviour:
   rotationSpeed: 4.5
   gravity: 9.81
   visionDistance: 10
-  visionAngle: 45
+  visionAngle: 90
   punchDistance: 1.5
   punchCooldown: 1
   damageAmount: 10
@@ -5375,7 +5381,7 @@ MonoBehaviour:
   rotationSpeed: 4.5
   gravity: 9.81
   visionDistance: 10
-  visionAngle: 45
+  visionAngle: 90
   punchDistance: 1.5
   punchCooldown: 1
   damageAmount: 10
@@ -6365,6 +6371,81 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 90
+--- !u!1001 &1904397218
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1035700092}
+    m_Modifications:
+    - target: {fileID: 1002867503341909235, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: playerToSwitchPrefab
+      value: 
+      objectReference: {fileID: 647579676}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862914521310675581, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_Name
+      value: Archer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862914521310675581, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+--- !u!1 &1904397219 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5862914521310675581, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+  m_PrefabInstance: {fileID: 1904397218}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1904397220 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3340617104569228480, guid: 689d536f7a48a31449c13089e0364e35, type: 3}
+  m_PrefabInstance: {fileID: 1904397218}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1940816049
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6984,7 +7065,7 @@ MonoBehaviour:
   rotationSpeed: 4.5
   gravity: 9.81
   visionDistance: 10
-  visionAngle: 45
+  visionAngle: 90
   punchDistance: 1.5
   punchCooldown: 1
   damageAmount: 10
@@ -7752,6 +7833,10 @@ PrefabInstance:
       propertyPath: healthText
       value: 
       objectReference: {fileID: 150414536}
+    - target: {fileID: 7535787235561706582, guid: f6df09b5dd53dda458841bb2ad1b29a9, type: 3}
+      propertyPath: playerToSwitchPrefab
+      value: 
+      objectReference: {fileID: 1904397219}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

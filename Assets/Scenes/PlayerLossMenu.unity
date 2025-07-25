@@ -1135,7 +1135,6 @@ MonoBehaviour:
   exitText: {fileID: 685919044}
   yesButton: {fileID: 1532080530}
   noButton: {fileID: 1873813833}
-  gameOverText: {fileID: 0}
 --- !u!114 &1740253984
 MonoBehaviour:
   m_ObjectHideFlags: 0

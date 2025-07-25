@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -14,6 +15,9 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
+
+        // gameData.activePlayer.SetActive(true); // Ensure the active player is set to true
+
         if (Instance == null)
         {
             Instance = this;

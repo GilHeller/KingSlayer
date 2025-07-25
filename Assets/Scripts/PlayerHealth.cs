@@ -59,6 +59,8 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Max(0f, currentHealth - amount);
         Debug.Log($"{gameObject.name} took {amount} damage. Current Health: {currentHealth}");
 
+        GameManager.Instance.gameData.health = (int)currentHealth;    
+
         UpdateHealthUI();
 
         // Play damage sound
@@ -74,8 +76,6 @@ public class PlayerHealth : MonoBehaviour
             playerAnimator.SetTrigger(takeDamageAnimationTrigger);
         }
 
-        GameManager.Instance.gameData.health = (int)currentHealth;    
-
         // Check death
         if (GameManager.Instance.gameData.health <= 0)
         {
@@ -85,7 +85,7 @@ public class PlayerHealth : MonoBehaviour
 
     void UpdateHealthUI()
     {
-        if (healthText != null)
+        if (healthText != null && GameManager.Instance != null && GameManager.Instance.gameData != null)
         {
             healthText.text = "Health: " + GameManager.Instance.gameData.health.ToString();
         }
@@ -106,14 +106,17 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             // Fallback
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            gameObject.SetActive(false); // Disable instead of destroy  
+            SceneManager.LoadScene("PlayerLossMenu");
         }
     }
 
     private IEnumerator HandleDeathAfterAnimation()
     {
         yield return new WaitForSeconds(deathAnimationDuration);
-        Destroy(gameObject);
+        // Destroy(gameObject);
+        gameObject.SetActive(false); // Disable instead of destroy
         SceneManager.LoadScene("PlayerLossMenu");
     }
 }

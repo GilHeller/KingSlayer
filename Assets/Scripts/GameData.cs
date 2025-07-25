@@ -13,6 +13,7 @@ public class GameData
     public GameObject activePlayer;
 
     public Vector3 spawnPoint;
+    public bool isNewScene = false;
 
     public static bool isGameOver = false;
 
@@ -29,7 +30,9 @@ public class GameData
         // Update the active player reference if it changes
         if (activePlayer == null)
         {
+            Debug.LogWarning("Active player not found, trying to find by tag.");
             activePlayer = GameObject.FindGameObjectWithTag("Player");
+            Debug.Log("Active player updated: " + (activePlayer != null ? activePlayer.name : "null"));
         }
     }
 }

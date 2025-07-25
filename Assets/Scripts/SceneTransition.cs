@@ -37,7 +37,15 @@ public class SceneTransition : MonoBehaviour
         }
         Debug.Log("Loading scene: " + targetScene);
 
+
         SceneManager.LoadScene(targetScene);
+
+        if (!GameManager.Instance.gameData.activePlayer)
+            GameManager.Instance.gameData.activePlayer = GameObject.FindGameObjectWithTag("Player");
+
+        GameManager.Instance.gameData.isNewScene = true;
+        GameManager.Instance.gameData.activePlayer.SetActive(false);
+        GameManager.Instance.gameData.activePlayer.SetActive(true);
         fadeImage.GetComponent<Animator>().SetBool("FadeIn", true);
     }
 }

@@ -125,8 +125,32 @@ public class ThirdPersonController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    void OnEnable()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.gameData != null)
+        {
+            if (GameManager.Instance.gameData.spawnPoint != Vector3.zero && GameManager.Instance.gameData.isNewScene)
+            {
+                transform.position = GameManager.Instance.gameData.spawnPoint;
+            }
+        }
+    
+        GameManager.Instance.gameData.activePlayer = gameObject; // Set this player as the active player in GameData
+}
+
+
+
     void Update()
     {
+
+        if (GameManager.Instance.gameData.spawnPoint != Vector3.zero && GameManager.Instance.gameData.isNewScene)
+        {
+            gameObject.transform.position = GameManager.Instance.gameData.spawnPoint; // Default spawn point
+        }
+
+        GameManager.Instance.gameData.isNewScene = false;
+
+
         if (!gameObject.name.ToLower().Contains("archer"))
         {
             HandleGroundCheck();

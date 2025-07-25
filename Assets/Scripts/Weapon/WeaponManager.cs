@@ -42,15 +42,23 @@ public class WeaponManager : MonoBehaviour
         Debug.Log("Instantiating archer prefab at position: " + position + ", rotation: " + rotation);
         Transform parentTransform = transform.parent;
         GameObject currentPlayer = GameManager.Instance.gameData.activePlayer;
-        GameObject newPlayer = Instantiate(playerToSwitchPrefab, position, rotation, parentTransform);
-        Debug.Log("Archer prefab instantiated: " + newPlayer.name);
+        // GameObject newPlayer = Instantiate(playerToSwitchPrefab, position, rotation, parentTransform);
+        playerToSwitchPrefab.SetActive(true); // Ensure the prefab is active
+        playerToSwitchPrefab.transform.position = position;
+        playerToSwitchPrefab.transform.rotation = rotation;
+        Debug.Log("Archer prefab instantiated: " + playerToSwitchPrefab.name);
 
-        GameManager.Instance.gameData.activePlayer = newPlayer;
+        GameManager.Instance.gameData.activePlayer = playerToSwitchPrefab;
 
         // // Destroy current player
         // Debug.Log("Destroying current player: " + currentPlayer.name);
         Debug.Log("Current player destroyed");
-        Destroy(currentPlayer.gameObject);
+        if (currentPlayer != null)
+        {
+            // Destroy(currentPlayer);
+            currentPlayer.SetActive(false); // Disable instead of destroy
+            Debug.LogWarning("Current player destroied.");
+        }
         // System.Threading.Thread.Sleep(2000); // Wait for the new player to initialize
         CameraController cameraController = Camera.main.GetComponent<CameraController>();
         if (cameraController != null)
