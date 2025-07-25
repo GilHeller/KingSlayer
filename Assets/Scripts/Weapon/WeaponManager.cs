@@ -44,8 +44,8 @@ public class WeaponManager : MonoBehaviour
         GameObject currentPlayer = GameManager.Instance.gameData.activePlayer;
         // GameObject newPlayer = Instantiate(playerToSwitchPrefab, position, rotation, parentTransform);
         playerToSwitchPrefab.SetActive(true); // Ensure the prefab is active
-        playerToSwitchPrefab.transform.position = position;
-        playerToSwitchPrefab.transform.rotation = rotation;
+        playerToSwitchPrefab.transform.position = currentPlayer.transform.position;
+        playerToSwitchPrefab.transform.rotation = currentPlayer.transform.rotation;
         Debug.Log("Archer prefab instantiated: " + playerToSwitchPrefab.name);
 
         GameManager.Instance.gameData.activePlayer = playerToSwitchPrefab;

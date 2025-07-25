@@ -37,7 +37,8 @@ public class MenuScript : MonoBehaviour
     public void StartLevel()
     {
         Debug.Log("StartLevel");
-        GameManager.Instance.gameData.health = 100;
+        if (GameManager.Instance)
+            GameManager.Instance.gameData.health = 100;
         SceneManager.LoadScene("Play");
     }
 

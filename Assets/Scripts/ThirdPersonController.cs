@@ -125,12 +125,14 @@ public class ThirdPersonController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void OnEnable()
+    public void OnEnable()
     {
+        Debug.Log("OnEnable called for ThirdPersonController");
         if (GameManager.Instance != null && GameManager.Instance.gameData != null)
         {
-            if (GameManager.Instance.gameData.spawnPoint != Vector3.zero && GameManager.Instance.gameData.isNewScene)
+            if (GameManager.Instance.gameData.spawnPoint != Vector3.zero)
             {
+                Debug.Log("Setting spawn point to: " + GameManager.Instance.gameData.spawnPoint);
                 transform.position = GameManager.Instance.gameData.spawnPoint;
             }
         }

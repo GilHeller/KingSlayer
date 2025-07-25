@@ -29,6 +29,7 @@ public class Checkpoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player reached checkpoint: " + gameObject.name);
+            GameManager.Instance.gameData.spawnPoint = transform.position;
             StartCoroutine(TeleportPlayerHere());
         }
     }
