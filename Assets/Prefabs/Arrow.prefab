@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2255353767559667952}
   - component: {fileID: 6854372299734355388}
   - component: {fileID: 4505090036226539195}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Arrow
-  m_TagString: Untagged
+  m_TagString: Undefined
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +58,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyTime: 10
-  impactEffectPrefab: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
+  impactEffectPrefab: {fileID: 3997811940523309996, guid: 36caec44c9f5e67478979a6bafe969b3, type: 3}
 --- !u!82 &4505090036226539195
 AudioSource:
   m_ObjectHideFlags: 0
@@ -205,15 +205,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1047567609848626, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1493936187531040, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1936848035193434, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1959729250425484, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
       propertyPath: m_Name
@@ -221,7 +221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1959729250425484, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4534147065827568, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
       propertyPath: m_RootOrder

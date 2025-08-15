@@ -50,6 +50,28 @@ public class ThirdPersonController : MonoBehaviour
     public GameObject CubePrefab;
     public GameObject CubePrefab2;
 
+    [Header("Throwing Settings")]
+    public GameObject projectilePrefab; // The object you want to throw (e.g., a rock, a grenade)
+    public Transform throwOrigin; // Point from which the projectile is thrown (e.g., character's hand)
+    public float throwForce = 15f; // How fast the projectile is launched
+    public float aimFOV = 40f; // Camera field of view when aiming
+    public float throwCooldown = 1.0f; // Time between throws
+    public float throwAnimationTime = 0.5f; // The duration of the throw animation
+
+    [Header("Aiming Settings")]
+    public float aimingTurnSpeed = 5f; // How fast the character turns while aiming
+    public bool isAiming = false;
+    private float lastThrowTime;
+    private float originalFOV;
+    private bool canThrow = true;
+    public string aimParam = "isAiming";
+    public float lookDIstance = 5;
+    public float lookSpeed = 5;
+
+    [Header("Crosshair Settings")]
+    public GameObject crossHairPrefab;
+    GameObject currentCrossHair;
+
     private Camera playerCamera;
     private CharacterController characterController;
     private float verticalRotation = 0;
@@ -122,12 +144,33 @@ public class ThirdPersonController : MonoBehaviour
             punchOrigin = punchOriginGO.transform;
         }
 
+        // Store original camera FOV
+        if (playerCamera != null)
+        {
+            originalFOV = playerCamera.fieldOfView;
+        }
+
+        // Create throw origin if not assigned (default to a point in front of the character's chest)
+        if (throwOrigin == null)
+        {
+            GameObject throwOriginGO = new GameObject("ThrowOrigin");
+            throwOriginGO.transform.SetParent(transform);
+            throwOriginGO.transform.localPosition = new Vector3(0, 1.4f, 0.5f);
+            throwOrigin = throwOriginGO.transform;
+        }
+
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void OnEnable()
     {
         Debug.Log("OnEnable called for ThirdPersonController");
+        if (GameManager.Instance == null || GameManager.Instance.gameData == null)
+        {
+            Debug.LogWarning("GameManager not ready yet. Skipping OnEnable logic.");
+            return;
+        }
+
         if (GameManager.Instance != null && GameManager.Instance.gameData != null)
         {
             if (GameManager.Instance.gameData.spawnPoint != Vector3.zero)
@@ -139,9 +182,6 @@ public class ThirdPersonController : MonoBehaviour
     
         GameManager.Instance.gameData.activePlayer = gameObject; // Set this player as the active player in GameData
 }
-
-
-
     void Update()
     {
 
@@ -153,16 +193,136 @@ public class ThirdPersonController : MonoBehaviour
         GameManager.Instance.gameData.isNewScene = false;
 
 
-        if (!gameObject.name.ToLower().Contains("archer"))
+        //if (!gameObject.name.ToLower().Contains("archer"))
+        //{
+        HandleGroundCheck();
+        HandleCrouch();
+        HandleAimingAndThrowing();
+        RotateTowardsCursor();
+        HandleMovement();
+        HandleCameraInput();
+        HandlePunchInput(); // New: Handle punch input
+        HandleAnimations();
+        //}
+    }
+
+    void RotateTowardsCursor()
+    {
+        if (!isAiming || playerCamera == null) return;
+
+        // Create a ray from camera through the cursor
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+        Plane groundPlane = new Plane(Vector3.up, transform.position); // y=player height plane
+
+        if (groundPlane.Raycast(ray, out float enter))
         {
-            HandleGroundCheck();
-            HandleCrouch();
-            HandleMovement();
-            HandleCameraInput();
-            HandlePunchInput(); // New: Handle punch input
-            HandleAnimations();
+            Vector3 hitPoint = ray.GetPoint(enter);
+            Vector3 direction = hitPoint - transform.position;
+            direction.y = 0f; // keep only horizontal rotation
+
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                // Smooth rotation
+                Quaternion targetRot = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 10f * Time.deltaTime);
+            }
+
+            ShowCrosshair(hitPoint);
         }
     }
+
+    public void ShowCrosshair(Vector3 crosshairPos)
+    {
+        if (!currentCrossHair)
+            currentCrossHair = Instantiate(crossHairPrefab);
+
+        currentCrossHair.transform.position = crosshairPos;
+        currentCrossHair.transform.LookAt(Camera.main.transform);
+    }
+
+
+    void HandleAimingAndThrowing()
+    {
+        // Aiming
+        if (Input.GetMouseButtonDown(1)) // Right mouse button down
+        {
+            isAiming = true;
+
+            if (animator != null)
+            {
+                animator.SetBool(aimParam, true);
+            }
+            // Adjust camera FOV
+            //if (playerCamera != null)
+            //{
+            //    playerCamera.fieldOfView = aimFOV;
+            //}
+        }
+        else if (Input.GetMouseButtonUp(1)) // Right mouse button up
+        {
+            isAiming = false;
+            // Reset camera FOV
+
+            if (animator != null)
+            {
+                animator.SetBool(aimParam, false);
+            }
+
+            //if (playerCamera != null)
+            //{
+            //    playerCamera.fieldOfView = originalFOV;
+            //}
+        }
+
+        ZoomCamera();
+
+    void ZoomCamera()
+    {
+        float targetFOV = Input.GetMouseButtonDown(1) ? aimFOV : originalFOV;
+        playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, lookSpeed * Time.deltaTime);
+    }
+
+        // Throwing
+        if (isAiming && Input.GetMouseButtonDown(0) && canThrow) // Left mouse button while aiming
+        {
+            ThrowObject();
+            canThrow = false;
+            lastThrowTime = Time.time;
+        }
+
+        // Cooldown for throwing
+        if (!canThrow && Time.time >= lastThrowTime + throwCooldown)
+        {
+            canThrow = true;
+        }
+    }
+
+    public void ThrowObject()
+    {
+        if (projectilePrefab == null || throwOrigin == null)
+        {
+            Debug.LogWarning("Projectile prefab or throw origin not set!");
+            return;
+        }
+
+        // Instantiate the projectile at the throw origin's position and rotation
+        GameObject projectile = Instantiate(projectilePrefab, throwOrigin.position, throwOrigin.rotation);
+
+        // Get the Rigidbody component and add force
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            // Get the direction from the camera's forward vector
+            Vector3 throwDirection = playerCamera.transform.forward;
+            rb.AddForce(throwDirection * throwForce, ForceMode.VelocityChange);
+        }
+
+        // Trigger the throw animation (you'll need to create a new parameter in your Animator)
+        if (animator != null)
+        {
+            animator.SetTrigger("Throw"); // Replace "Throw" with your animation parameter name
+        }
+    }   
 
     void LateUpdate()
     {
@@ -187,13 +347,21 @@ public class ThirdPersonController : MonoBehaviour
 
         if (direction.magnitude >= 0.1f)
         {
-            // Calculate target angle based on camera and input
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.transform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
+            // If aiming, turn the character to face the camera direction
+            if (isAiming)
+            {
+                // Smoothly rotate the character to face the same direction as the camera
+                Quaternion targetRotation = Quaternion.Euler(0, playerCamera.transform.eulerAngles.y, 0);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, aimingTurnSpeed * Time.deltaTime);
+            } else { 
+                // Calculate target angle based on camera and input
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.transform.eulerAngles.y;
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            }
             // Move in the direction the character is facing
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            //Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            Vector3 moveDir = transform.forward; // Change this to use the character's current forward vector
 
             bool isRunning = Input.GetKey(KeyCode.LeftShift) && !isCrouching;
             float currentSpeed = isCrouching ? crouchSpeed : (isRunning ? runSpeed : walkSpeed);
@@ -300,21 +468,25 @@ public class ThirdPersonController : MonoBehaviour
     }
 
     void HandlePunchInput()
-{
-    // Check for left mouse button click and if cooldown allows
-    if (Input.GetMouseButtonDown(0) && canPunch)
     {
-        Hit();
-        canPunch = false; // Start cooldown
-        lastPunchTime = Time.time;
-    }
+        if (isAiming)
+        {
+            return; // Exit the method immediately
+        }
+        // Check for left mouse button click and if cooldown allows
+        if (Input.GetMouseButtonDown(0) && canPunch)
+        {
+            Hit();
+            canPunch = false; // Start cooldown
+            lastPunchTime = Time.time;
+        }
 
-    // Reset canPunch after cooldown
-    if (!canPunch && Time.time >= lastPunchTime + punchCooldown)
-    {
-        canPunch = true;
+        // Reset canPunch after cooldown
+        if (!canPunch && Time.time >= lastPunchTime + punchCooldown)
+        {
+            canPunch = true;
+        }
     }
-}
 
     public void Hit(float externalDamage = 0f)
     {
@@ -399,6 +571,8 @@ public class ThirdPersonController : MonoBehaviour
     public bool IsMoving() { return wasMoving; }
     public bool IsRunning() { return Input.GetKey(KeyCode.LeftShift) && wasMoving && !isCrouching; }
     public float GetCurrentSpeed() { return animationSpeed; }
+
+
 
     void OnDrawGizmosSelected()
     {

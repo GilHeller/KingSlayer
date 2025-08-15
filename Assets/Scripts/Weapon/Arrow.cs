@@ -46,7 +46,7 @@ public class Arrow : MonoBehaviour
                 EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.TakeDamage(GameManager.Instance.gameData.currentEquippedWeapon.damage);
+                    enemyHealth.TakeDamage(50);
                 }
 
             }

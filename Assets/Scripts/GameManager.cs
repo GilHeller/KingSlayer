@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -29,7 +30,27 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
+    private void Update()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        if (sceneName == "Play" && !this.gameData.activePlayer)
+        {
+            this.gameData.activePlayer = GameObject.FindGameObjectWithTag("Player");
+        }
+
+        //this.gameData.activePlayer.GetComponentInParent<GameObject>().transform.position = this.gameData.activePlayer.transform.position;
+
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player != this.gameData.activePlayer)
+            {
+                player.gameObject.transform.position = this.gameData.activePlayer.transform.position;
+            }
+        }
+    }
     public void SaveGameData()
     {
         string json = JsonUtility.ToJson(gameData);

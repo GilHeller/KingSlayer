@@ -1,3 +1,4 @@
+using System.Collections;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -33,49 +34,44 @@ public class WeaponManager : MonoBehaviour
     {
         Debug.Log("Switching to archer mode and replacing player model");
 
-
-        // Save current position & rotation
-        Vector3 position = transform.position;
-        Quaternion rotation = transform.rotation;
-
-        // Instantiate archer prefab
-        Debug.Log("Instantiating archer prefab at position: " + position + ", rotation: " + rotation);
-        Transform parentTransform = transform.parent;
         GameObject currentPlayer = GameManager.Instance.gameData.activePlayer;
-        // GameObject newPlayer = Instantiate(playerToSwitchPrefab, position, rotation, parentTransform);
-        playerToSwitchPrefab.SetActive(true); // Ensure the prefab is active
-        playerToSwitchPrefab.transform.position = currentPlayer.transform.position;
-        playerToSwitchPrefab.transform.rotation = currentPlayer.transform.rotation;
-        Debug.Log("Archer prefab instantiated: " + playerToSwitchPrefab.name);
+        Vector3 pos = currentPlayer.transform.position;
+        Quaternion rot = currentPlayer.transform.rotation;
+
+        StartCoroutine(MoveArcherNextFrameAndDisableKnight(currentPlayer, pos, rot));
 
         GameManager.Instance.gameData.activePlayer = playerToSwitchPrefab;
 
-        // // Destroy current player
-        // Debug.Log("Destroying current player: " + currentPlayer.name);
-        Debug.Log("Current player destroyed");
-        if (currentPlayer != null)
-        {
-            // Destroy(currentPlayer);
-            currentPlayer.SetActive(false); // Disable instead of destroy
-            Debug.LogWarning("Current player destroied.");
-        }
-        // System.Threading.Thread.Sleep(2000); // Wait for the new player to initialize
         CameraController cameraController = Camera.main.GetComponent<CameraController>();
         if (cameraController != null)
-        {
-            // Reassign camera target to new player
             cameraController.FindPlayer();
-            // cameraController.FollowPlayer();
+    }
+        private IEnumerator MoveArcherNextFrameAndDisableKnight(GameObject currentPlayer, Vector3 pos, Quaternion rot)
+        {
+
+            Camera oldCam = currentPlayer.GetComponentInChildren<Camera>(true); // true = include inactive
+            if (oldCam != null)
+            {
+                Destroy(oldCam.gameObject);
+                Debug.Log("Destroyed Knight's camera.");
+            }
+            else
+            {
+                Debug.LogWarning("No camera found on Knight to destroy.");
+            }
+
+            playerToSwitchPrefab.SetActive(true);
+
+            // Wait a frame so archer's Start/Awake runs
+            yield return null;
+
+            playerToSwitchPrefab.transform.position = pos;
+            playerToSwitchPrefab.transform.rotation = rot;
+        
+            currentPlayer.SetActive(false);
         }
 
-        // if (newPlayer.name.Contains("Archer"))
-        // {
-        //     System.Threading.Thread.Sleep(2000); // Wait for the new player to initialize
-        //     newPlayer.GetComponent<InputSystem>().enabled = true;
-        // }
 
-}
-    
     void HandleInput()
     {
         if (currentWeapon != null)
