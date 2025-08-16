@@ -13,6 +13,7 @@ public class SceneSwitcher : MonoBehaviour
     {
         if (other.CompareTag(triggeringTag))
         {
+            GameManager.Instance.gameData.spawnPoint = Vector3.zero;
             SceneManager.LoadScene(sceneName);
         }
     }

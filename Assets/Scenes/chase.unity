@@ -315,6 +315,18 @@ MonoBehaviour:
     m_Bits: 1
   CubePrefab: {fileID: 0}
   CubePrefab2: {fileID: 0}
+  projectilePrefab: {fileID: 0}
+  throwOrigin: {fileID: 0}
+  throwForce: 15
+  aimFOV: 40
+  throwCooldown: 1
+  throwAnimationTime: 0.5
+  aimingTurnSpeed: 5
+  isAiming: 0
+  aimParam: isAiming
+  lookDIstance: 5
+  lookSpeed: 5
+  crossHairPrefab: {fileID: 0}
 --- !u!95 &386689994 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 8af3d333e19fbfb40a56dbcc34d620a3, type: 3}
@@ -766,8 +778,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 195, y: -68}
-  m_SizeDelta: {x: 350, y: 40.2}
+  m_AnchoredPosition: {x: 264.5, y: -76.04297}
+  m_SizeDelta: {x: 503, y: 42.286}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &740250162
 MonoBehaviour:
@@ -791,7 +803,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 32
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -3526,8 +3538,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 195, y: -35}
-  m_SizeDelta: {x: 350, y: 40.2}
+  m_AnchoredPosition: {x: 266, y: -35}
+  m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1919735527
 MonoBehaviour:
@@ -3551,7 +3563,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 25
+    m_FontSize: 42
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
@@ -3585,7 +3597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8af3d333e19fbfb40a56dbcc34d620a3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.65
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8af3d333e19fbfb40a56dbcc34d620a3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3622,6 +3634,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 8af3d333e19fbfb40a56dbcc34d620a3, type: 3}
       propertyPath: m_Name
       value: Knight D Pelegrini
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8af3d333e19fbfb40a56dbcc34d620a3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8af3d333e19fbfb40a56dbcc34d620a3, type: 3}
       propertyPath: m_TagString

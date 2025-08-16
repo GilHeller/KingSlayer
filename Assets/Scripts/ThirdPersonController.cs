@@ -40,6 +40,10 @@ public class ThirdPersonController : MonoBehaviour
     public float punchCooldown = 0.5f; // Time between punches
     public LayerMask punchableLayers; // Layers that can be hit by a punch (e.g., "Enemy")
     public Transform punchOrigin; // Optional: Create an empty GameObject at the character's fist
+    
+    [Header("Punch Sound Settings")]
+    public AudioClip punchSound; // The sound clip for punching
+    private AudioSource audioSource;
 
     [Header("Ground Detection")]
     public Transform groundCheck; // Create empty child at character's feet
@@ -160,6 +164,13 @@ public class ThirdPersonController : MonoBehaviour
         }
 
         Cursor.lockState = CursorLockMode.Locked;
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.playOnAwake = false;
     }
 
     public void OnEnable()
@@ -495,6 +506,11 @@ public class ThirdPersonController : MonoBehaviour
             punchDamage = externalDamage;
         } else {
             animator.SetTrigger(punchParam); // Trigger the punch animation
+        }
+
+        if (punchSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(punchSound);
         }
 
         Vector3 origin = (punchOrigin != null) ? punchOrigin.position : transform.position + transform.forward * 0.5f;

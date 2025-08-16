@@ -6,6 +6,11 @@ public class BridgeOpener : MonoBehaviour
     public float openAngle = -90f;
     public float rotationSpeed = 30f;
     private bool shouldOpen = false;
+    private bool hasPlayedSound = false;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip openSound;
 
     private void Update()
     {
@@ -19,6 +24,12 @@ public class BridgeOpener : MonoBehaviour
                     targetRotation,
                     rotationSpeed * Time.deltaTime
                 );
+            }
+            // Play the sound once when opening starts
+            if (!hasPlayedSound && audioSource != null && openSound != null)
+            {
+                audioSource.PlayOneShot(openSound);
+                hasPlayedSound = true;
             }
         }
     }
