@@ -208,8 +208,12 @@ public class ThirdPersonController : MonoBehaviour
         //{
         HandleGroundCheck();
         HandleCrouch();
-        HandleAimingAndThrowing();
-        RotateTowardsCursor();
+        // Handle aiming and throwing if the player has a bow equipped
+        if (GameManager.Instance.gameData.currentEquippedWeapon && GameManager.Instance.gameData.currentEquippedWeapon.weaponType == WeaponType.Bow)
+        {
+            HandleAimingAndThrowing();
+            RotateTowardsCursor();
+        }
         HandleMovement();
         HandleCameraInput();
         HandlePunchInput(); // New: Handle punch input

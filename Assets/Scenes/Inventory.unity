@@ -4967,7 +4967,14 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9d4ad9585d881b9469236aa4e598a8b1, type: 3}
   - {fileID: 21300000, guid: 67eaf2a7d1686074684270d1821c55cb, type: 3}
   - {fileID: 21300000, guid: 4a59607811bc1f9459591856511467a5, type: 3}
-  ManaIcons: []
+  ManaIcons:
+  - {fileID: 21300000, guid: f85b31371da4cec40a86dbba0b9befa6, type: 3}
+  - {fileID: 21300000, guid: 6c6dba9f5527c01438c9dfedb24a0f91, type: 3}
+  - {fileID: 21300000, guid: f293313977af3f44aae278c9a49ccd62, type: 3}
+  - {fileID: 21300000, guid: 0f62342fef8e8a341b4579680dbfbe6f, type: 3}
+  - {fileID: 21300000, guid: 7a19505da386e5346929625512c068cb, type: 3}
+  - {fileID: 21300000, guid: 9437743dd0b6b83419b6c051e3373387, type: 3}
+  - {fileID: 21300000, guid: c2dcd477646d9024f91ebe4cd4c49e03, type: 3}
   BowIcons:
   - {fileID: 21300000, guid: fb1f2a59f67448f4db4f862dcb445aa9, type: 3}
   - {fileID: 21300000, guid: fc6ec0b0f09e050458575e72975d27bb, type: 3}
@@ -9294,6 +9301,7 @@ MonoBehaviour:
     currentEquippedWeapon: {fileID: 0}
     activePlayer: {fileID: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
+    isNewScene: 0
   LoadFromPrevious: 0
 --- !u!4 &1399966433
 Transform:
